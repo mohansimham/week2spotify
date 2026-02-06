@@ -2,14 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>JS Test</title>
+  <title>React Load Test</title>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 </head>
+
 <body>
-  <h1 id="msg">Before JS</h1>
+  <h1>Before React</h1>
+  <div id="root"></div>
 
   <script>
-    document.getElementById("msg").innerText = "JavaScript executed ✅";
-    alert("JS is running");
+    console.log("React object:", window.React);
+    console.log("ReactDOM object:", window.ReactDOM);
+
+    if (!window.React || !window.ReactDOM) {
+      document.body.innerHTML += "<p style='color:red'>❌ React failed to load</p>";
+    } else {
+      const h = React.createElement;
+      ReactDOM.createRoot(document.getElementById("root"))
+        .render(h("h2", null, "✅ React rendered successfully"));
+    }
   </script>
 </body>
 </html>
