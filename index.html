@@ -1,188 +1,1196 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Spotify – Strategic Product Thinking (Week 2)</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-
-<style>
-body { font-family: system-ui, -apple-system; background:#f8fafc; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 2: Strategic Product Thinking - Spotify's Audio Empire</title>
+    <meta name="description" content="Test your strategic product thinking with this Spotify case study simulation.">
+    
+    <!-- Open Graph for LinkedIn sharing -->
+    <meta property="og:title" content="Week 2: Strategic Product Thinking - Spotify Simulation">
+    <meta property="og:description" content="Can you navigate Spotify's strategic crossroads? Test your Product Manager skills.">
+    <meta property="og:type" content="website">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React and ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* READABILITY OPTIMIZATION */
+        .scenario-content {
+            font-size: 16px;
+            line-height: 1.7;
+            max-width: 65ch;
+            color: #1f2937;
+        }
+        
+        .scenario-content p {
+            margin-bottom: 1.25em;
+        }
+        
+        .scenario-content strong {
+            display: block;
+            color: #1e40af;
+            font-weight: 600;
+            font-size: 15px;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        
+        /* POST-ANALYSIS SCENARIO FORMATTING */
+        .analysis-scenario {
+            font-size: 15px;
+            line-height: 1.65;
+            color: #374151;
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+            margin-bottom: 16px;
+            font-style: italic;
+        }
+        
+        .analysis-scenario .emoji {
+            font-size: 18px;
+            margin-right: 8px;
+            vertical-align: middle;
+            font-style: normal;
+        }
+        
+        .analysis-scenario .context-quote {
+            font-style: italic;
+            color: #4b5563;
+            display: block;
+            margin-top: 8px;
+        }
+        
+        .feedback-content {
+            font-size: 15px;
+            line-height: 1.65;
+            max-width: 62ch;
+            color: #374151;
+        }
+        
+        .feedback-content p {
+            margin-bottom: 1.15em;
+        }
+        
+        .feedback-content p:first-child {
+            font-weight: 500;
+            color: #1f2937;
+        }
+        
+        .question-text {
+            font-size: 17px;
+            line-height: 1.5;
+            font-weight: 600;
+            color: #111827;
+            max-width: 60ch;
+        }
+        
+        .option-text {
+            font-size: 15px;
+            line-height: 1.5;
+            color: #1f2937;
+        }
+        
+        .section-label {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #6b7280;
+            margin-bottom: 0.75em;
+        }
+        
+        /* Professional formal color overrides */
+        .bg-indigo-600 { background-color: #1e40af !important; }
+        .bg-indigo-100 { background-color: #dbeafe !important; }
+        .text-indigo-600 { color: #1e40af !important; }
+        .border-indigo-500 { border-color: #2563eb !important; }
+        .from-indigo-600 { --tw-gradient-from: #1e40af !important; }
+        .to-blue-600 { --tw-gradient-to: #3b82f6 !important; }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
-
 <body>
-<div id="root"></div>
+    <div id="root"></div>
+    
+    <script>
+        const { useState, useEffect } = React;
+        const { createElement: h } = React;
 
-<script>
-const h = React.createElement;
-const { useState } = React;
+        // Google Apps Script Web App URL for email collection
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz6E8UJUn5xhilm2pLWjdvaip_6MnSCf-XRVPv5u4hOttjr0SNCu9I10q2ESLKGQ04_mQ/exec';
 
-/* ================= ERROR BOUNDARY ================= */
-class ErrorBoundary extends React.Component {
-  constructor(props){ super(props); this.state={hasError:false}; }
-  static getDerivedStateFromError(){ return {hasError:true}; }
-  render(){
-    if(this.state.hasError){
-      return h("div",{className:"min-h-screen flex items-center justify-center p-6"},
-        h("div",{className:"bg-white p-8 rounded-xl shadow max-w-md text-center"},
-          h("h2",{className:"text-2xl font-bold text-red-600 mb-3"},"Something went wrong"),
-          h("p",{className:"text-gray-600"},"Please refresh the page.")
-        )
-      );
-    }
-    return this.props.children;
-  }
-}
+        // Icon components as simple SVGs
+        const Share2Icon = () => h('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 },
+            h('path', { d: 'M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8' }),
+            h('polyline', { points: '16 6 12 2 8 6' }),
+            h('line', { x1: 12, y1: 2, x2: 12, y2: 15 })
+        );
 
-/* ================= TRACKING ================= */
-const GOOGLE_SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbyGQtLE7KUZZZQ7xV_hlQCWzYayRKx2JnbTwtsQPRdmEFPaisrfm6qq3djx7QCpYTzi/exec";
+        const MailIcon = () => h('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 },
+            h('path', { d: 'M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z' }),
+            h('polyline', { points: '22,6 12,13 2,6' })
+        );
 
-function track(data){
-  try{
-    fetch(GOOGLE_SCRIPT_URL,{
-      method:"POST",
-      mode:"no-cors",
-      headers:{ "Content-Type":"application/json" },
-      body:JSON.stringify(data)
-    });
-  }catch(e){}
-}
+        const TrophyIcon = () => h('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 },
+            h('path', { d: 'M6 9H4.5a2.5 2.5 0 0 1 0-5H6' }),
+            h('path', { d: 'M18 9h1.5a2.5 2.5 0 0 0 0-5H18' }),
+            h('path', { d: 'M4 22h16' }),
+            h('path', { d: 'M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22' }),
+            h('path', { d: 'M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22' }),
+            h('path', { d: 'M18 2H6v7a6 6 0 0 0 12 0V2Z' })
+        );
 
-/* ================= QUESTIONS ================= */
-const QUESTIONS = [
-["2006 – Piracy dominates","How should Spotify position itself?",
- ["Compete with iTunes",3,"Against labels"],
- ["Be better than piracy",10,"Aligns all incentives"],
- ["Netflix for music",6,"Analogy only"],
- ["Digital radio",4,"Understates disruption"]],
-["2008 – Freemium pressure","What should Spotify do?",
- ["Kill free tier",2,"Kills growth"],
- ["Double down on freemium",10,"Builds habit & data"],
- ["Usage limits",5,"Resentment"],
- ["Lower price",4,"Value erosion"]],
-["2011 – US entry","Biggest risk?",
- ["Tech scale",4,"Solvable"],
- ["Label negotiations",10,"Existential"],
- ["UX",3,"Not decisive"],
- ["Marketing",5,"Manageable"]],
-["2015 – Apple Music","Where to compete?",
- ["Price",3,"Apple subsidizes"],
- ["Personalization",10,"Compounding moat"],
- ["Feature parity",6,"Copyable"],
- ["Exclusives",5,"Limited"]],
-["2017 – Wrapped","Invest?",
- ["No",2,"Misses brand"],
- ["Yes – signature moment",10,"Earned media"],
- ["Small test",6,"Under-invest"],
- ["Quarterly",4,"Kills anticipation"]],
-["2019 – Podcasts","Why invest?",
- ["Trend",3,"Weak"],
- ["Margins & ownership",10,"Fixes economics"],
- ["Replace music",2,"Impossible"],
- ["Marketing",5,"Secondary"]],
-["2020 – Artists","Best response?",
- ["Raise payouts",2,"Unsustainable"],
- ["Discovery tools",10,"Career value"],
- ["Ignore",1,"Reputation risk"],
- ["Charge artists",3,"Bad optics"]],
-["2023 – AI","Best bet?",
- ["AI music creation",3,"Threatens labels"],
- ["AI DJ",10,"Enhances moat"],
- ["Voice cloning",6,"Narrow"],
- ["Replace artists",1,"Suicide"]],
-["2024 – Margins","Best lever?",
- ["Raise prices",4,"Short term"],
- ["Shift to podcasts",10,"Structural"],
- ["Cut R&D",3,"Harms moat"],
- ["Cut marketing",2,"Slows growth"]],
-["2025 – Plateau","Next direction?",
- ["Music-only",2,"Caps upside"],
- ["Everything-audio",10,"Expands value"],
- ["Social network",5,"Crowded"],
- ["Live events",6,"Operational risk"]]
-];
+        const TrendingUpIcon = () => h('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 },
+            h('polyline', { points: '23 6 13.5 15.5 8.5 10.5 1 18' }),
+            h('polyline', { points: '17 6 23 6 23 12' })
+        );
 
-/* ================= APP ================= */
-function App(){
-  const [started,setStarted]=useState(false);
-  const [email,setEmail]=useState("");
-  const [i,setI]=useState(0);
-  const [answers,setAnswers]=useState([]);
-  const [feedback,setFeedback]=useState(null);
+        const UsersIcon = () => h('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 },
+            h('path', { d: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2' }),
+            h('circle', { cx: 9, cy: 7, r: 4 }),
+            h('path', { d: 'M23 21v-2a4 4 0 0 0-3-3.87' }),
+            h('path', { d: 'M16 3.13a4 4 0 0 1 0 7.75' })
+        );
 
-  if(!started){
-    return h("div",{className:"min-h-screen flex items-center justify-center p-6"},
-      h("div",{className:"bg-white p-8 rounded-xl shadow max-w-lg w-full"},
-        h("h1",{className:"text-2xl font-bold mb-4"},"Spotify – Strategic Product Thinking"),
-        h("input",{className:"border p-3 w-full mb-4",placeholder:"Your email",
-          value:email,onChange:e=>setEmail(e.target.value)}),
-        h("button",{className:"w-full bg-blue-600 text-white py-3 rounded",
-          onClick:()=>{
-            track({email,status:"started"});
-            setStarted(true);
-          }},"Start Simulation")
-      )
-    );
-  }
+        function PMSimulation() {
+            const [email, setEmail] = useState('');
+            const [hasStarted, setHasStarted] = useState(false);
+            const [currentQuestion, setCurrentQuestion] = useState(0);
+            const [answers, setAnswers] = useState([]);
+            const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
+            const [showResults, setShowResults] = useState(false);
+            const [hasAttempted, setHasAttempted] = useState(false);
 
-  if(i >= QUESTIONS.length){
-    const total = answers.reduce((s,a)=>s+a.points,0);
-    const pct = Math.round(total / (QUESTIONS.length*10) * 100);
-    return h("div",{className:"min-h-screen p-6 max-w-4xl mx-auto"},
-      h("h2",{className:"text-3xl font-bold mb-4"},"Final Score: "+pct+"%"),
-      h("table",{className:"w-full bg-white shadow rounded"},
-        h("thead",null,h("tr",{className:"bg-gray-100"},
-          ["Q","Choice","Score"].map(x=>h("th",{className:"p-3 text-left"},x)))),
-        h("tbody",null,
-          answers.map((a,idx)=>
-            h("tr",{key:idx,className:"border-t"},
-              h("td",{className:"p-3"},idx+1),
-              h("td",{className:"p-3"},a.text),
-              h("td",{className:"p-3"},a.points+"/10")
-            )
-          )
-        )
-      )
-    );
-  }
+            // Session Persistence
+            useEffect(() => {
+                const storedEmail = localStorage.getItem('pmSimEmail_w2');
+                const storedStartTime = localStorage.getItem('pmSimStartTime_w2');
+                
+                if (storedEmail) {
+                    setEmail(storedEmail);
+                    const hoursSinceStart = (Date.now() - new Date(storedStartTime)) / (1000 * 60 * 60);
+                    if (hoursSinceStart < 24) {
+                        setHasStarted(true);
+                    }
+                }
+            }, []);
 
-  const q = QUESTIONS[i];
+            useEffect(() => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const resetMode = urlParams.get('reset') === 'true';
+                
+                if (resetMode) {
+                    localStorage.removeItem('product_manager_simulation_week2_attempted');
+                    setHasAttempted(false);
+                } else {
+                    const attempted = localStorage.getItem('product_manager_simulation_week2_attempted');
+                    if (attempted) {
+                        setHasAttempted(true);
+                    }
+                }
+            }, []);
 
-  if(feedback){
-    return h("div",{className:"min-h-screen flex items-center justify-center p-6"},
-      h("div",{className:"bg-white p-8 rounded-xl shadow max-w-xl"},
-        h("h3",{className:"font-bold mb-3"},"Feedback"),
-        h("p",{className:"mb-4"},feedback.explain),
-        h("button",{className:"bg-blue-600 text-white py-3 px-6 rounded",
-          onClick:()=>{
-            setAnswers([...answers,feedback]);
-            setFeedback(null);
-            setI(i+1);
-          }},"Continue")
-      )
-    );
-  }
+            const simulation = {
+                title: "Spotify's Audio Empire: Strategic Product Thinking",
+                company: "Spotify",
+                week: "Week 2",
+                year: "2026",
+                description: "Step into the strategic crossroads that defined Spotify's journey from a Swedish startup fighting piracy to the world's dominant audio platform. These scenarios are drawn from actual decisions Spotify's product leaders faced—navigating label negotiations, existential competition from Apple, the podcast gamble, and the elusive path to profitability. Each question tests core Week 2 skills: Business Model Canvas thinking, Porter's Five Forces analysis, Blue Ocean Strategy, OKR-driven prioritization, and competitive positioning. No hypotheticals—just the real strategic dilemmas that built a $80 billion company.",
+                questions: [
+                    {
+                        id: 1,
+                        scenario: "**October 2008 – The Freemium Gamble**\n\n**The Crisis:**\nThe global music industry is collapsing. Revenue has fallen 40% since 1999—from $23.8 billion to $14.3 billion. Piracy platforms like LimeWire and The Pirate Bay serve millions of users daily. Record labels are suing college students.\n\n**Daniel Ek's Pitch to Labels:**\n\"The only way to beat piracy is to offer something better than piracy—legally. We need to give users free, instant access to every song ever recorded.\"\n\n**The Label Pushback:**\nUniversal, Sony, and Warner control 70% of all music. Their response: \"Free music? You want us to give away our product? iTunes charges $0.99 per song and it's working.\"\n\n**The Economics:**\nSpotify must pay labels ~70% of every dollar earned. If the free tier doesn't convert enough users to Premium ($9.99/month), the company will bleed cash indefinitely. iTunes has 500 million accounts and Apple's distribution power.\n\n**The Strategic Question:**\nShould Spotify launch with a permanent free tier (freemium), or follow Apple's model of paid-only access with a limited free trial?",
+                        question: "As Spotify's first PM, which business model do you recommend for launch?",
+                        options: [
+                            {
+                                text: "Launch with a permanent free tier (freemium)—use ad-supported listening as a funnel to convert users to Premium subscriptions",
+                                points: 10,
+                                feedback: "This is the bet Daniel Ek made—and it changed an entire industry.\n\nThe strategic insight: piracy already offered free music. Spotify couldn't compete with free by charging money. The only way to win was to offer something better than piracy for free (legal, high-quality, instant), then upsell convenience (offline, no ads, higher quality).\n\nBy 2024, Spotify's free tier had attracted 600+ million users, converting roughly 30% to Premium—a conversion rate most SaaS companies would kill for. The free tier served as the world's largest music discovery funnel.\n\nThis is classic Blue Ocean Strategy: instead of competing in the \"paid music\" red ocean against iTunes, Spotify created a new market category—legal free streaming—that made piracy obsolete.\n\nThe lesson: when the alternative is free (piracy), you can't win by charging. You win by making free your acquisition strategy."
+                            },
+                            {
+                                text: "Launch as paid-only ($9.99/month) with a 30-day free trial—protect margins and signal premium value from day one",
+                                points: 3,
+                                feedback: "You're protecting margins that don't exist yet. With zero users and zero brand recognition, you're asking people to pay $9.99/month for something they can get free via piracy.\n\nThis is the mistake Apple Music would repeat years later—launching without a permanent free tier. Apple could survive it because they had 1 billion devices with pre-installed distribution. Spotify in 2008 had nothing.\n\nThe business model innovation wasn't the subscription—it was the funnel. Free users generate ad revenue, create network effects (shared playlists, social proof), and eventually convert. Without the funnel, there's no scale.\n\nWhen Porter's Five Forces show buyer power is extreme (users have free alternatives), you don't fight buyer power—you work with it."
+                            },
+                            {
+                                text: "Launch with a pay-per-stream micro-transaction model—users pay $0.01 per song, no subscription required",
+                                points: 4,
+                                feedback: "You're trying to find middle ground between free and subscription—but you're creating friction that kills adoption.\n\nMicro-transactions work when users can see clear value per unit (buying a game item, tipping a creator). But music consumption is high-frequency—people listen to 30-50 songs per day. At $0.01/stream, that's $0.30-0.50 daily, or $9-15/month. You've just reinvented the subscription with worse UX.\n\nWorse, every play now involves a mental accounting decision: \"Is this song worth a penny?\" That's the opposite of the frictionless experience that beats piracy.\n\nThe best business models remove friction from the user journey, not add it. Subscription and freemium both eliminate per-use decisions—that's why they won."
+                            },
+                            {
+                                text: "Launch free-only (100% ad-supported, no premium tier)—maximize adoption, monetize entirely through advertising",
+                                points: 5,
+                                feedback: "You've correctly identified that free drives adoption—but you've removed the revenue engine that makes the economics work.\n\nAd revenue per user in music streaming averages $1-2/month. Premium subscribers pay $9.99/month—5-10X more. Without Premium, Spotify would need 5-10X more users to generate the same revenue, while still paying labels 70% of every ad dollar.\n\nThis is the trap that Pandora fell into: massive user base, ad-only model, thin margins, no path to profitability. Pandora eventually sold to SiriusXM for a fraction of Spotify's valuation.\n\nThe Business Model Canvas insight: you need dual revenue streams (ads AND subscriptions) because each serves a different customer segment with different willingness to pay."
+                            }
+                        ]
+                    },
+                    {
+                        id: 2,
+                        scenario: "**July 2011 – The US Market Entry**\n\n**The Context:**\nSpotify has 15 million users across Europe. The US market is the biggest music market in the world—worth $7 billion. But entering the US means renegotiating every label deal. Universal, Sony, and Warner want equity stakes in Spotify (giving them ownership of the platform). Sean Parker (Napster founder, Facebook investor) is advising Spotify on the US launch.\n\n**The Label Demands:**\nLabels demand: (1) equity stakes in Spotify, (2) higher per-stream royalty rates for the US market, (3) restrictions on the free tier—limit free users to a maximum number of hours per month. The labels argue: \"We won't subsidize free listening in our biggest market.\"\n\n**The Alternatives:**\nSpotify could: (a) accept label demands and launch in the US with restrictions, (b) refuse equity demands and delay US entry, (c) launch in the US with a modified free tier.\n\n**The Stakes:**\nEvery month of delay means Pandora, Rdio, and emerging Apple services gain ground. But giving labels equity creates misaligned incentives—labels profit from Spotify's growth regardless of whether artists are fairly paid.",
+                        question: "How do you navigate the US label negotiations—what terms do you accept?",
+                        options: [
+                            {
+                                text: "Accept all label demands including equity stakes—market entry speed trumps deal terms",
+                                points: 5,
+                                feedback: "You're prioritizing speed, which is critical—but you're also handing your negotiating leverage to your suppliers permanently.\n\nSpotify did give equity to labels (estimated 15-18% combined), and it haunted them for years. Labels profited from Spotify's growth even while publicly criticizing the platform's artist payouts. It created a bizarre dynamic: labels wanted Spotify to succeed (equity upside) but also wanted higher royalties (margin pressure).\n\nPorter's Five Forces lesson: when supplier power is extreme—three labels control 70% of content—you sometimes have to accept unfavorable terms to survive. But you should negotiate for time-limited equity or performance-based vesting.\n\nThe strategic tax of supplier power: Spotify paid ~70% of revenue in royalties for over a decade, capping gross margins at 25-30%."
+                            },
+                            {
+                                text: "Accept equity stakes but negotiate hard on free tier restrictions—protect the funnel that drives conversion",
+                                points: 10,
+                                feedback: "This is close to what Spotify actually did—and it shows the best strategic prioritization.\n\nSpotify accepted equity stakes (a painful but necessary concession to supplier power) but fought hard to preserve a meaningful free tier in the US. The result: a modified free tier with usage caps, but enough to demonstrate value and drive Premium conversion.\n\nThe strategic logic: equity dilution is a one-time cost. Free tier restrictions permanently damage the acquisition funnel. If you lose the funnel, you lose the growth engine.\n\nThis is OKR thinking in action. Objective: Enter the US market. Key Result 1: Launch within Q3 2011. Key Result 2: Preserve free-to-Premium conversion rate above 25%. Key Result 3: Secure label deals for minimum 3-year terms.\n\nYou trade equity (painful but survivable) to protect the conversion engine (existential)."
+                            },
+                            {
+                                text: "Refuse equity demands entirely—delay US launch until labels accept standard licensing terms",
+                                points: 3,
+                                feedback: "You're fighting the right fight at the wrong time.\n\nIn 2011, Spotify had 15 million users—almost all in Europe. It had no leverage to dictate terms to labels that controlled all the music. Refusing equity would have delayed the US launch by years, giving Pandora, Rdio, and eventually Apple Music a massive head start.\n\nPorter's Five Forces reality check: when three suppliers control 70% of your essential input, you don't have the power to refuse their demands. You accept the terms, build scale, and renegotiate from strength later.\n\nSpotify eventually renegotiated better terms as it grew—by 2018, it had 75 million Premium subscribers and real leverage. But that leverage only existed because they entered the US in 2011.\n\nSometimes the best strategy is to accept bad terms today to build the position that gets you good terms tomorrow."
+                            },
+                            {
+                                text: "Bypass major labels entirely—launch in the US with independent music only and build leverage",
+                                points: 2,
+                                feedback: "This sounds bold, but it's strategically suicidal. Without the Big Three labels, you're missing 70% of all music—including virtually every artist users actually want to hear.\n\nImagine launching Spotify in the US without Taylor Swift, Beyoncé, Drake, or The Beatles. Users would try it, discover their favorite songs are missing, and leave. Your competitor (Pandora, later Apple Music) has those songs.\n\nTidal tried a version of this strategy—exclusive artist partnerships instead of comprehensive catalogs—and it struggled to reach even 3 million subscribers.\n\nThe Business Model Canvas lesson: your value proposition (\"every song, instantly\") requires your key partners (labels) to deliver. Removing key partners destroys the value proposition."
+                            }
+                        ]
+                    },
+                    {
+                        id: 3,
+                        scenario: "**March 2014 – The Echo Nest Acquisition**\n\n**The Opportunity:**\nThe Echo Nest is a music intelligence startup born at MIT. It uses machine learning to analyze audio features—tempo, energy, mood, danceability—of every song. It powers recommendations for Rdio, Beats Music, and dozens of other music apps.\n\n**The Price Tag:**\n$100 million. Spotify's total revenue in 2013 was ~$1 billion, and the company was still unprofitable.\n\n**The Case For:**\nSpotify's recommendations are mediocre. The \"Related Artists\" feature is basic. Playlists are human-curated, which doesn't scale to 50+ million users. The Echo Nest could transform Spotify from a catalog (commodity) into a personalization engine (defensible moat).\n\n**The Case Against:**\nCFO argues: \"We're losing money. $100M on a recommendation engine? Users come for the music, not the algorithm. No one chose Pandora over iTunes because of better recommendations.\"\n\n**The Competitive Intel:**\nApple is rumored to be building a streaming service. Apple acquired Beats Music for $3 billion—which also uses The Echo Nest. If Spotify doesn't buy it, a competitor will.",
+                        question: "Should Spotify spend $100M on The Echo Nest—an AI company—while still unprofitable?",
+                        options: [
+                            {
+                                text: "Acquire The Echo Nest immediately—personalization is the only sustainable competitive moat against Apple and Amazon",
+                                points: 10,
+                                feedback: "This is exactly what Spotify did, and it became arguably the most important acquisition in the company's history.\n\nThe strategic insight that most people missed: music catalogs are commodities. Every streaming service has the same 100 million songs from the same labels. If your product is the same catalog as everyone else, you compete on price—a race to the bottom.\n\nBut personalization is a compounding advantage. Every minute a user spends on Spotify makes their recommendations better, their playlists more personal, and their switching costs higher. The Echo Nest turned Spotify's data exhaust into a flywheel.\n\nThe result: Discover Weekly (launched 2015) alone generated 2.3 billion hours of streaming and became the single biggest differentiator against Apple Music.\n\nBlue Ocean Strategy: Spotify stopped competing on catalog (red ocean) and competed on personalization (blue ocean). Apple had better distribution. Spotify had better discovery."
+                            },
+                            {
+                                text: "Pass on the acquisition—build recommendation technology in-house over 2-3 years for less cost",
+                                points: 4,
+                                feedback: "You're making a build-vs-buy mistake that ignores competitive timing.\n\nThe Echo Nest has 8 years of audio analysis data, 35+ million songs profiled, and relationships with every music API in the industry. Building this in-house would take 2-3 years minimum—and by then, Apple Music will have launched with superior recommendations using the very technology you passed on.\n\nThe acquisition isn't just about technology—it's about denying competitors access. If Apple or Amazon buys The Echo Nest, they gain Spotify's level of music intelligence overnight.\n\nIn fast-moving markets, the cost of delay often exceeds the cost of acquisition. $100M seems expensive until your competitor uses that technology to steal 20 million potential subscribers."
+                            },
+                            {
+                                text: "Negotiate a licensing deal instead of acquisition—get the technology without the $100M commitment",
+                                points: 6,
+                                feedback: "This is a reasonable compromise—you get technology access without the capital outlay. But it has a fatal flaw: licensing doesn't prevent competitors from using the same technology.\n\nThe Echo Nest was powering recommendations for Rdio, Beats, iHeartRadio, and others simultaneously. A licensing deal means Apple, Amazon, and every competitor can also license the same tech. You've gained nothing defensible.\n\nThe whole point of the acquisition was exclusivity. Once Spotify owned The Echo Nest, competitors lost access to that intelligence layer. This forced Apple to build inferior recommendation technology from scratch when they launched Apple Music in 2015.\n\nCompetitive Strategy 101: if a resource can be equally accessed by all competitors, it's not a competitive advantage. Exclusivity is the moat."
+                            },
+                            {
+                                text: "Invest the $100M in exclusive artist deals instead—content, not technology, wins in media",
+                                points: 5,
+                                feedback: "You're thinking like a media company, but Spotify isn't a media company—it's a technology platform.\n\nExclusive content creates temporary spikes. Jay-Z's Tidal had exclusive albums from Kanye, Beyoncé, and Rihanna—and still couldn't crack 3 million subscribers. Why? Because exclusives are time-limited (artists want maximum distribution), expensive (labels charge premium rates), and they anger users who can't access their favorite music.\n\nPersonalization, by contrast, is a permanent, compounding advantage. Every day you use Spotify, your Discover Weekly gets better. Your Daily Mix gets smarter. Your playlists become irreplaceable.\n\nContent is a commodity that can be licensed by anyone. Personalization built on proprietary data is a moat that deepens with every user interaction."
+                            }
+                        ]
+                    },
+                    {
+                        id: 4,
+                        scenario: "**June 2015 – Apple Music Launches**\n\n**The Threat:**\nApple launches Apple Music on June 30, 2015—pre-installed on over 1 billion iPhones, iPads, and Macs worldwide. Apple offers a 3-month free trial. Spotify has 75 million users (20 million Premium). Apple has infinite cash reserves and the world's most powerful distribution channel.\n\n**Apple's Aggressive Tactics:**\nApple charges a 30% commission on all in-app subscriptions on iOS. This means if a user signs up for Spotify Premium through the iPhone app, Spotify pays Apple $3/month—eating nearly all of Spotify's margin. Apple Music doesn't pay this tax. Apple is also reportedly pressuring labels to restrict Spotify's free tier.\n\n**The Internal Panic:**\nSpotify's board is shaken. \"We're fighting a company with $200 billion in cash. They can subsidize Apple Music forever. They control the distribution channel. This is Netscape vs. Microsoft all over again.\"\n\n**Spotify's Position:**\n75 million MAU, 20 million Premium subscribers, 30% free-to-Premium conversion rate, operating in 58 countries. No hardware ecosystem. No app store leverage.",
+                        question: "Apple Music just launched. How does Spotify respond strategically?",
+                        options: [
+                            {
+                                text: "Double down on personalization and discovery—make Spotify's algorithmic advantage the reason users stay, not the catalog",
+                                points: 10,
+                                feedback: "This is precisely what Spotify did—and it's a masterclass in asymmetric competitive strategy.\n\nThree weeks after Apple Music launched, Spotify released Discover Weekly. Coincidence? Absolutely not. Spotify knew it couldn't compete on distribution (Apple has 1 billion devices), cash reserves ($200 billion), or ecosystem integration.\n\nBut Spotify had something Apple didn't: years of listening data from 75 million users and The Echo Nest's AI. Discover Weekly personalized 30 songs per user per week, creating what Matthew Ogle called \"a mixtape from your best friend.\" It generated 1.7 billion streams in its first 5 months.\n\nPorter's competitive strategy: when a larger competitor enters your market, don't fight their strengths (distribution, cash). Compete on a dimension they can't easily replicate (data-driven personalization built on years of user behavior).\n\nApple later emphasized human curation with celebrity DJs. Spotify countered with algorithms built on data. Both worked—but Spotify's approach scaled infinitely while Apple's required expensive human labor."
+                            },
+                            {
+                                text: "Slash Premium prices to $4.99/month to undercut Apple Music and prevent subscriber switching",
+                                points: 3,
+                                feedback: "You're starting a price war with a company that has $200 billion in cash. This is how you die.\n\nApple can subsidize Apple Music at any price point indefinitely—streaming is a rounding error on iPhone revenue. If Spotify cuts to $4.99, Apple matches immediately. Spotify's already-thin margins collapse, while Apple barely notices.\n\nWorse, price wars train customers to value low prices over product quality. Once you've anchored at $4.99, raising prices becomes nearly impossible.\n\nThe strategy lesson: never compete on price against a company that can outspend you 100:1. Compete on value dimensions they can't match. Spotify's data advantage, cross-platform availability (Android, web, smart speakers), and social features were all defensible moats that Apple couldn't replicate with money alone."
+                            },
+                            {
+                                text: "File antitrust complaints against Apple's App Store practices and fight the 30% tax",
+                                points: 7,
+                                feedback: "You're playing the long game—and Spotify eventually did exactly this, filing an EU antitrust complaint in 2019.\n\nThe complaint argued that Apple's 30% commission on in-app subscriptions created an unfair advantage: Apple Music pays no commission, while Spotify either absorbs the cost (destroying margins) or raises prices on iOS (making Spotify look more expensive).\n\nThe EU ruled in Spotify's favor in 2024, fining Apple €1.8 billion. This was strategically significant but took 5 years.\n\nThe limitation: regulatory action is a defensive strategy, not a growth strategy. It removes an unfair disadvantage but doesn't create a competitive advantage. You still need a product-level response.\n\nThe best approach combines both: file the complaint (long-term structural fix) while doubling down on product differentiation (immediate competitive response). Spotify did both."
+                            },
+                            {
+                                text: "Pursue aggressive international expansion to markets where Apple has weaker presence—India, Southeast Asia, Latin America",
+                                points: 8,
+                                feedback: "You're finding competitive whitespace—and this is strong strategic thinking.\n\nApple's ecosystem dominance is concentrated in the US, UK, Japan, and Western Europe. In India (1.4 billion people, low iPhone penetration, Android-dominant), Southeast Asia, and Latin America, Apple Music has no distribution advantage.\n\nSpotify launched in India in 2019 and rapidly gained 2 million users in the first week. By reaching markets where Apple has no install base, Spotify built scale that reinforced its global negotiating leverage with labels.\n\nThe only gap in this strategy: it doesn't address the core US market where Apple Music is most competitive. International expansion is necessary but not sufficient.\n\nBest strategic response: combine product differentiation (Discover Weekly, superior personalization) with international expansion AND regulatory pressure. Spotify actually executed all three simultaneously."
+                            }
+                        ]
+                    },
+                    {
+                        id: 5,
+                        scenario: "**July 2015 – The Discover Weekly Decision**\n\n**The Background:**\nA small product team has been experimenting with algorithmically-generated personalized playlists. The prototype—code-named \"Discover Weekly\"—creates a unique 30-song playlist for every user, refreshed every Monday.\n\n**The Internal Debate:**\nDaniel Ek is skeptical: \"Users come for specific songs and artists. They don't want an algorithm telling them what to listen to.\"\n\n**The Data:**\nSpotify's user segmentation reveals two types: \"lean-forward\" listeners (who search for specific music) and \"lean-back\" listeners (who want the service to find music for them). The lean-back segment is 60% of users but drives only 30% of engagement—they're underserved.\n\n**The Product Decision:**\nPlaylist length: 100 tracks or 30 tracks? Refresh frequency: daily, weekly, or monthly? Should it include only unfamiliar artists, or mix known and unknown?\n\n**The Hack Week Origins:**\nDiscover Weekly started as a hack week project. Two engineers built the first version and pushed it to all Spotify employees. The internal response was overwhelming—\"This is the best thing Spotify has ever made.\"",
+                        question: "How should the PM structure the Discover Weekly product for maximum impact?",
+                        options: [
+                            {
+                                text: "30 tracks, refreshed weekly on Mondays, mixing familiar-adjacent and new artists—make it feel like a mixtape from a friend",
+                                points: 10,
+                                feedback: "You've nailed every critical product decision—and this is exactly what Spotify shipped.\n\n30 tracks (not 100): Early tests with 100-track playlists felt like a chore. 30 songs is ~2 hours—long enough for an immersive session, short enough to feel curated. Fewer songs made each selection feel more intentional.\n\nWeekly refresh on Mondays: Daily was too frequent (users felt pressured). Monthly was too slow (no urgency). Weekly created a ritual—\"Monday morning Discover Weekly\" became a cultural habit. The Monday timing was deliberate: it captured users during the low-energy start of the work week when they were most receptive to new music.\n\nFamiliar-adjacent mixing: Early versions with only unknown artists felt alienating. Mixing artists similar to what you already love with genuine discoveries created a trust bridge.\n\nBehavioral insight from Richard Thaler (who advised Spotify): users shared Discover Weekly with friends because they didn't realize each playlist was unique. This accidental virality drove massive organic growth.\n\nThe OKR lesson: the Objective was \"help lean-back users discover music they love.\" The Key Result wasn't streams—it was saves. Songs saved from Discover Weekly meant the algorithm was working."
+                            },
+                            {
+                                text: "100 tracks, refreshed daily, focused entirely on new undiscovered artists—maximize discovery impact",
+                                points: 4,
+                                feedback: "You've maximized discovery at the cost of engagement.\n\n100 tracks daily is overwhelming—no user can process that volume. It feels like a firehose, not a curated recommendation. When everything is new, nothing feels special.\n\nDaily refresh creates anxiety: \"I haven't finished yesterday's playlist and there's already a new one.\" Users start ignoring it entirely.\n\nAll-unknown artists removes the trust signal. Users need some familiar anchors to trust the unfamiliar recommendations. It's like a restaurant menu with zero recognizable dishes—most people will leave.\n\nProduct design principle: constraints create value. By limiting to 30 songs per week, Spotify made each song feel like a deliberate choice, not an algorithmic dump. Scarcity drives perceived quality."
+                            },
+                            {
+                                text: "Let users customize their playlist length and refresh frequency—give them control over the experience",
+                                points: 5,
+                                feedback: "You're adding complexity where simplicity is the feature.\n\nThe genius of Discover Weekly is that it requires zero user input. You open Spotify on Monday, and your playlist is there. No settings to configure, no preferences to set, no decisions to make.\n\nAdding customization options introduces paradox of choice. \"Do I want 20 songs or 50? Daily or weekly? More pop or more indie?\" Every option is a decision point that creates friction and reduces engagement.\n\nThe behavioral insight: lean-back listeners—the primary audience for Discover Weekly—are precisely the users who don't want to make decisions about music. They want the service to decide for them.\n\nProduct lesson: sometimes the most user-friendly thing is to make the decision for the user. Opinionated defaults that work for 80% of users beat customizable interfaces that require 100% of users to configure."
+                            },
+                            {
+                                text: "Skip the playlist format entirely—build an AI radio station that plays personalized music continuously like Pandora",
+                                points: 6,
+                                feedback: "You're solving the right problem (personalized discovery) with the wrong format.\n\nRadio is ephemeral—songs play and disappear. Playlists are persistent—you can save, share, revisit, and replay. Playlists also integrate with Spotify's core UX (your library, collaborative playlists, social sharing). Radio doesn't.\n\nPandora built an excellent personalized radio product and still lost to Spotify. Why? Because radio doesn't create switching costs. If you like a song on radio, you can't save it, share it, or add it to a playlist (Pandora's limitations). The playlist format turned algorithmic discovery into a persistent, shareable asset.\n\nDiscover Weekly generated massive organic sharing because users could share the playlist link. Radio is inherently unshareable—each user's station is different.\n\nFormat matters as much as algorithm. Playlists were Spotify's \"native unit\"—building on the existing format was the right call."
+                            }
+                        ]
+                    },
+                    {
+                        id: 6,
+                        scenario: "**April 2018 – The Direct Listing Gambit**\n\n**The Decision:**\nSpotify is ready to go public. Revenue is $5 billion. 170 million MAU, 75 million Premium subscribers. But the company has never turned an annual profit.\n\n**The Conventional Path:**\nA traditional IPO would involve investment banks (Goldman Sachs, Morgan Stanley) setting an offering price, conducting a road show, and guaranteeing price stability. Cost: 3-7% of capital raised ($100-350M in fees) plus the standard \"IPO pop\" that transfers value from the company to institutional investors.\n\n**Daniel Ek's Proposal:**\n\"We don't need to raise money—we have $1.5 billion in cash. We just need our shares tradeable. Why pay banks $300M to do what the market can do for free?\"\n\n**The Risk:**\nNo company of Spotify's size has ever done a direct listing. There are no underwriters to stabilize the stock price. No lock-up period means insiders can dump shares on day one. The stock could be wildly volatile.\n\n**The Board Debate:**\n\"If this fails, it damages the brand and scares investors. If it succeeds, we pioneer a new model and save hundreds of millions.\"",
+                        question: "Should Spotify pursue a direct listing—an untested approach—or take the safe path of a traditional IPO?",
+                        options: [
+                            {
+                                text: "Execute the direct listing—Spotify doesn't need capital, and the traditional IPO model wastes hundreds of millions enriching intermediaries",
+                                points: 10,
+                                feedback: "This is the bold, strategic move Spotify made—and it reshaped how tech companies go public.\n\nOn April 3, 2018, Spotify's shares opened at $165.90 on the NYSE with a market cap of $29.5 billion. No underwriters. No road show. No IPO pop transferring value to institutional investors. Trading volume exceeded 30 million shares on day one with remarkably low volatility.\n\nThe strategic logic was perfect Business Model Canvas thinking: Why do companies IPO? Two reasons: (1) raise capital, and (2) create liquidity for shareholders. Spotify needed #2 but not #1. The traditional IPO bundles both and charges a massive premium for the package.\n\nBy unbundling, Spotify saved an estimated $200-350M in underwriting fees and avoided the typical 15-20% IPO underpricing that enriches banks' institutional clients.\n\nThe ripple effect: Slack, Palantir, Roblox, and Coinbase all followed Spotify's direct listing model. The NYSE changed its rules permanently to accommodate direct listings.\n\nStrategic innovation isn't just about products—it's about challenging every assumption in your value chain."
+                            },
+                            {
+                                text: "Pursue a traditional IPO—the proven path minimizes risk and provides price stability through underwriter support",
+                                points: 5,
+                                feedback: "You're choosing safety when the risk-reward clearly favors innovation.\n\nA traditional IPO would work—Spotify would still go public, still get liquidity. But at what cost? Banks would take $200-350M in fees. Institutional investors would get shares at a discount (the \"IPO pop\" averages 15-20%), transferring hundreds of millions from existing shareholders to banks' preferred clients. A 6-month lock-up would prevent employees and early investors from selling.\n\nThe only genuine risk of the direct listing was price volatility—but Spotify was one of the world's most recognizable brands with well-understood economics. Institutional investors didn't need a road show to understand Spotify.\n\nSometimes the \"safe path\" is actually the expensive path. When you have strong brand recognition, solid financials, and no need to raise capital, the traditional IPO is paying for services you don't need.\n\nOKR alignment: if the Objective is \"maximize shareholder value through public listing,\" the Key Result should include minimizing value leakage to intermediaries."
+                            },
+                            {
+                                text: "Delay going public—focus on reaching profitability first so the market gives Spotify a higher valuation",
+                                points: 4,
+                                feedback: "Waiting for profitability sounds prudent, but it ignores market timing and competitive dynamics.\n\nIn April 2018, tech valuations were strong and investor appetite for subscription businesses was high. Spotify's competitors (Apple, Amazon, Google) were all publicly traded—Spotify's private status limited its ability to use stock for acquisitions and employee retention.\n\nMore importantly, Spotify's early investors and employees had been holding illiquid shares for 10+ years. Delaying the listing risked talent attrition (employees wanting to cash out) and investor pressure.\n\nProfitability is important, but Spotify eventually demonstrated that the market valued growth and user engagement even without profits. Netflix went public while unprofitable and rewarded investors enormously.\n\nThe lesson: don't let perfectionism delay strategic moves. Go public when market conditions are favorable and your business model is well-understood—not when every metric is perfect."
+                            },
+                            {
+                                text: "Pursue a hybrid approach—direct listing with a small capital raise to satisfy both goals",
+                                points: 7,
+                                feedback: "You're thinking creatively—and this approach later became real. In 2020, the SEC approved rule changes allowing companies to raise capital through direct listings.\n\nBut in 2018, the regulatory framework didn't yet support this hybrid. Direct listings at the time could only list existing shares, not issue new ones. Spotify would have had to pioneer not just a new listing process but also a new regulatory framework—adding years of SEC negotiation.\n\nSometimes the perfect option isn't available in the current regulatory environment. Spotify made the pragmatic choice: execute the direct listing as-is (since they didn't need capital anyway) and let the regulatory innovation follow.\n\nAnd it did—Spotify's success inspired the SEC to evolve the rules, enabling later companies to do exactly what you proposed. Being a first mover sometimes means working within constraints and letting your success change the system."
+                            }
+                        ]
+                    },
+                    {
+                        id: 7,
+                        scenario: "**February 2019 – The $500M Podcast Bet**\n\n**Daniel Ek's Thesis:**\n\"20% of all Spotify listening will eventually be non-music content. Audio is a $100 billion market—video is $1 trillion. Audio is massively undervalued.\"\n\n**The Plan:**\nSpend $400-500M acquiring podcast companies: Gimlet Media ($230M, premium podcast studio behind \"Reply All\" and \"Homecoming\"), Anchor ($110M, podcast creation platform powering 40% of new podcasts), and more to follow.\n\n**The Economics:**\nMusic: Spotify pays 70% of revenue to labels. Gross margin: ~25%. Podcast: Spotify keeps the content or makes revenue-share deals. Potential gross margin: 40-60%. Every minute a user spends listening to podcasts instead of music is a minute that doesn't incur label royalties.\n\n**The Skeptics:**\nAnalysts: \"Spotify is a music company. Podcasts are a niche. Apple Podcasts is free and dominant. This is Netflix envy—trying to own content when you should be a platform.\"\n\n**The Spotify Q4 2018 Context:**\nSpotify just posted its first-ever quarterly operating profit ($107M). Investors expect continued margin improvement. Instead, Spotify announces it will return to losses to fund podcast acquisitions.",
+                        question: "Should Spotify invest $500M in podcasts—returning to losses after just achieving profitability?",
+                        options: [
+                            {
+                                text: "Invest aggressively in podcasts—it's the only way to escape the label royalty trap and build a diversified audio platform",
+                                points: 10,
+                                feedback: "This is Ek's biggest strategic bet—and the logic is sound, even if execution was bumpy.\n\nThe structural problem: with 70% of revenue going to labels, Spotify's music business would never generate tech-company margins. Podcasts offered a path to 40-60% gross margins because there's no equivalent of the Big Three labels extracting 70% of every dollar.\n\nThe strategic framework (Business Model Canvas): Spotify was transforming its Value Proposition from \"all the world's music\" to \"all the world's audio.\" This expanded the TAM from the $20B music streaming market to the $100B audio market.\n\nBy 2024, podcasts accounted for significant listening time on Spotify, and the company reached €1.1 billion in annual profit. The podcast investment—combined with Anchor enabling millions of creators to publish—transformed Spotify's supplier dynamics.\n\nPorter's Five Forces insight: podcasts diversified Spotify's supplier base from \"3 labels that control everything\" to \"millions of independent creators.\" This fundamentally shifted bargaining power in Spotify's favor.\n\nThe lesson: sometimes short-term profit sacrifice is the only path to long-term structural advantage."
+                            },
+                            {
+                                text: "Invest moderately ($100-150M) in podcast technology only—don't buy studios, just build the distribution platform",
+                                points: 7,
+                                feedback: "You're managing risk wisely—but you may be under-investing in the thesis you believe in.\n\nBuilding podcast distribution without content is like building a theater without movies. Apple Podcasts already distributed podcasts. Spotify's differentiation required exclusive or original content that could only be found on Spotify—which required buying studios.\n\nThe Anchor acquisition (creation tools) aligned with your platform-only thesis. But Gimlet (premium content) was essential for signaling to the market that Spotify was serious about podcasts—not just experimenting.\n\nSpotify later admitted they over-invested in some podcast exclusives (spending $200M on Joe Rogan, for example) and under-invested in others. The right number was probably somewhere between your $150M and their $500M.\n\nThe OKR lesson: when you're disrupting your own business model, half-measures produce neither the old model's stability nor the new model's potential."
+                            },
+                            {
+                                text: "Skip podcasts entirely—protect the newly-achieved profitability and focus on music quality and market share",
+                                points: 3,
+                                feedback: "You're optimizing for the present at the cost of the future—this is the classic innovator's dilemma.\n\nProtecting profitability feels safe, but Spotify's music-only business model had a structural ceiling: 25-30% gross margins, permanently capped by label royalties. No amount of music market share improves this margin.\n\nWithout diversification, Spotify remains a music utility—replaceable by Apple Music (which has better distribution), Amazon Music (which bundles with Prime), or YouTube Music (which has the world's largest video catalog).\n\nProfitability without structural competitive advantage is temporary. Apple could match any music feature. Amazon could undercut any price. Only by expanding into formats where Spotify had unique advantages (podcast creator tools, recommendation algorithms, ad technology) could Spotify build a durable business.\n\nThe Blue Ocean lesson: music streaming is a red ocean. Audio platform is a blue ocean. The $500M bet was the bridge between the two."
+                            },
+                            {
+                                text: "Invest in music exclusives instead—sign exclusive deals with major artists to differentiate from Apple Music and Amazon",
+                                points: 4,
+                                feedback: "You're playing the content exclusivity game that Tidal already lost.\n\nMusic exclusives are expensive, temporary, and anger users. When Taylor Swift was exclusive to Apple Music, Spotify users didn't switch—they pirated the album or waited. When Jay-Z pulled his catalog from Spotify for Tidal, Tidal gained a few hundred thousand subscribers while Jay-Z's streaming numbers collapsed.\n\nWhy music exclusives fail: (1) Artists want maximum distribution—exclusive deals limit their earnings. (2) Labels push back—they want every platform paying royalties. (3) Users have low switching costs for individual albums but high switching costs for personalized playlists. (4) Exclusives are temporary—eventually the music goes everywhere.\n\nPodcasts, by contrast, are creator-owned. Independent podcasters can genuinely choose to be Spotify-exclusive because they benefit from Spotify's monetization tools (ads, subscriptions). The incentive alignment is fundamentally different."
+                            }
+                        ]
+                    },
+                    {
+                        id: 8,
+                        scenario: "**November 2020 – Spotify Wrapped Goes Viral (Again)**\n\n**The Phenomenon:**\nEvery December, Spotify Wrapped turns personal listening data into shareable social media content. In 2020, it generated over 60 million shares on social media in a single week—more organic impressions than most companies' entire annual marketing budgets.\n\n**The Strategic Question:**\nThe VP of Marketing proposes investing $50M to expand Wrapped into a year-round data storytelling platform: monthly listening reports, real-time mood trackers, \"music personality\" profiles, social comparison features.\n\n**The Data Team's Concern:**\nHead of Data Science warns: \"More data features means more privacy exposure. Users love Wrapped because it's once-a-year and opt-in. Year-round tracking changes the perception from 'fun gift' to 'surveillance.'\"\n\n**The Competition:**\nApple Music has launched Apple Music Replay (their version of Wrapped). It's available year-round but generates almost zero social sharing. Instagram and TikTok are building their own year-end recaps inspired by Spotify Wrapped.\n\n**The Engagement Data:**\nWrapped users have 25% lower churn rates. Users who share Wrapped on social media are 40% more likely to still be subscribers 6 months later.",
+                        question: "Should Spotify expand Wrapped into a year-round data platform, or protect the once-a-year magic?",
+                        options: [
+                            {
+                                text: "Keep Wrapped as an annual event—scarcity is the entire reason it goes viral, and year-round data risks privacy backlash",
+                                points: 10,
+                                feedback: "You understand something that most product managers don't: sometimes the most powerful product decision is choosing NOT to ship.\n\nWrapped works because of scarcity psychology. Once a year, for one week, your entire social media feed becomes a music identity showcase. If Wrapped were monthly, it would be... a notification you ignore.\n\nApple Music Replay proved this. It's available year-round—and nobody shares it. Not because the data is worse, but because there's no collective cultural moment. Wrapped is a synchronized global event; Replay is a feature.\n\nThe privacy angle is equally important. Users accept Spotify tracking them because the \"price\" is one delightful annual summary. Expand to monthly reports and the implicit contract changes: \"Spotify tracks everything I do, all the time.\" That's not fun—it's creepy.\n\nThe OKR insight: Wrapped's Objective isn't \"share listening data.\" It's \"create an annual cultural moment that drives organic acquisition and reduces churn.\" The Key Result is social shares and retention—both of which depend on scarcity.\n\nStrategic restraint is a competitive advantage."
+                            },
+                            {
+                                text: "Expand to quarterly recaps plus the annual Wrapped—find the balance between engagement and scarcity",
+                                points: 6,
+                                feedback: "You're trying to have it both ways—and quarterly recaps would probably work better than monthly ones. But you're still diluting the magic.\n\nThe risk: if Q1, Q2, and Q3 recaps exist, the annual Wrapped becomes \"just the Q4 version plus a summary.\" You've turned a cultural event into a feature cadence.\n\nApple tried a variant of this (year-round Replay) and it failed. Spotify's head of marketing reportedly considered quarterly recaps and decided against them for exactly this reason.\n\nThe behavioral insight: humans value experiences more when they're rare. A birthday dinner feels special because it's once a year. If your restaurant offered \"birthday dinners\" monthly, the magic disappears.\n\nIf you must increase data engagement, the better approach is to enrich the annual Wrapped (add more categories, better visualizations, new share formats) rather than increase its frequency."
+                            },
+                            {
+                                text: "Build a year-round 'Music Identity' platform—personality profiles, mood trackers, compatibility scores with friends",
+                                points: 4,
+                                feedback: "You're turning Spotify into a social network—and that's a graveyard of failed product expansions.\n\nSpotify has tried social features before: Spotify Social (2011), Spotify Running (2015), Spotify Group Session (2020). None achieved meaningful sustained engagement. Music listening is fundamentally personal, not social.\n\nYear-round personality profiles and mood trackers cross the line from \"fun\" to \"surveillance.\" When users see real-time mood tracking, they think: \"Spotify knows when I'm sad.\" That's not a feature—it's a Black Mirror episode.\n\nThe broader lesson: just because you have data doesn't mean you should build a product around it. The best use of data is often invisible—powering recommendations, improving discovery—not displayed to users.\n\nWrapped succeeds because it transforms invisible data into one visible, shareable moment. Constant visibility removes the surprise that makes it special."
+                            },
+                            {
+                                text: "License the Wrapped format to other platforms—monetize the concept by helping brands create their own year-end recaps",
+                                points: 5,
+                                feedback: "Creative thinking—but you're commoditizing your most powerful marketing asset.\n\nWrapped's value to Spotify is that it's unique to Spotify. When Instagram, Netflix, and Duolingo create their own Wrapped-style year-end summaries (which they all did), they're imitating Spotify—and every imitation reinforces Spotify as the original.\n\nIf Spotify licenses the format, it loses the differentiation. Wrapped becomes a generic \"year-in-review\" template instead of a uniquely Spotify cultural moment.\n\nThe competitive strategy: when you have a brand moat, you protect it—you don't sell it. Coca-Cola doesn't license its brand to competitors. Apple doesn't sell its design language. Spotify shouldn't monetize its most organic growth engine.\n\nWrapped generates more value as free marketing (60M+ social shares) than it ever could as a licensed product."
+                            }
+                        ]
+                    },
+                    {
+                        id: 9,
+                        scenario: "**December 2023 – The Profitability Pivot**\n\n**The Reckoning:**\nAfter 15 years and billions in cumulative losses, Spotify's board demands a path to sustainable profitability. The stock has fallen from $364 (2021 peak) to $150. Investors are tired of \"growth at any cost.\"\n\n**The Painful Actions Already Taken:**\nSpotify cut 17% of its workforce (~1,500 employees) across 2023. Podcast spending was slashed—entire studios shut down, exclusive deals renegotiated or abandoned. CEO Daniel Ek acknowledged over-hiring during the pandemic boom.\n\n**The Strategic Choice:**\nSpotify needs to decide: raise Premium prices (first increase in 12 years, risking churn), cut content costs (reduce podcast investment, renegotiate label deals), or find new revenue streams (audiobooks, ad tech, creator tools).\n\n**The Data:**\nPremium ARPU has declined in real terms due to inflation. Music royalty costs remain at ~70%. Podcast exclusive spending peaked at $1B+. Ad revenue is growing 13% YoY but is only 12% of total revenue.\n\n**The Macro Context:**\nPost-COVID, investors demand profitability over growth. Netflix, which pursued a similar \"growth then profit\" strategy, proved it works—but only after brutal cost-cutting.",
+                        question: "How do you structure Spotify's path to sustained profitability?",
+                        options: [
+                            {
+                                text: "Execute all three simultaneously: raise prices, cut content costs, AND diversify revenue—a comprehensive margin expansion strategy",
+                                points: 10,
+                                feedback: "This is exactly what Spotify did—and the results were extraordinary. By Q4 2024, Spotify posted €1.1 billion in annual profit on €15 billion revenue—its first-ever full year of profitability.\n\nThe three-lever approach worked because each lever reinforced the others:\n\n1. Price increases ($1-2/month across markets): Premium subscribers showed remarkably low churn sensitivity. Spotify had underpriced for years—users valued the service at more than $9.99. This alone added billions in revenue.\n\n2. Content cost rationalization: Spotify shifted from expensive podcast exclusives to a non-exclusive, ad-supported model. This cut fixed costs while maintaining podcast engagement. The key insight: users came to Spotify for the platform, not specific exclusives.\n\n3. Revenue diversification: Audiobooks (included in Premium), ad technology improvements, and creator monetization tools opened new revenue streams without increasing costs proportionally.\n\nThe OKR framework: Objective: Achieve sustainable operating profitability. KR1: Raise Premium ARPU by 10%+ (price increases). KR2: Reduce content cost per user by 15% (rationalization). KR3: Grow non-subscription revenue to 15%+ (diversification).\n\nHolistic strategy beats single-lever optimization."
+                            },
+                            {
+                                text: "Focus primarily on price increases—Spotify has massive pricing power after 12 years at $9.99 and users won't churn",
+                                points: 7,
+                                feedback: "You're right that Spotify had significant untapped pricing power—and price increases were the single biggest lever.\n\nSpotify raised US Premium from $9.99 to $10.99, then $11.99 in 2024. Churn barely moved. Users who had built years of personalized playlists, Discover Weekly data, and Wrapped history had enormous switching costs.\n\nBut pricing alone isn't a complete strategy. It's a one-time margin improvement that eventually hits a ceiling. If you raise prices 20% but costs also rise 20% (label royalties are percentage-based), your margin improvement is temporary.\n\nStructural profitability requires structural changes: reducing the 70% royalty share (through podcast and audiobook content that doesn't carry label costs), building advertising technology (higher-margin revenue), and creating new product lines.\n\nPrice increases buy you time. Cost restructuring and diversification create durability."
+                            },
+                            {
+                                text: "Prioritize cost-cutting above all else—slash headcount further, exit podcasts, and return to being a lean music platform",
+                                points: 4,
+                                feedback: "You'll achieve profitability—but you'll destroy the growth engine in the process.\n\nExiting podcasts means abandoning the only strategy that reduces Spotify's structural dependence on label royalties. It means going back to a business permanently capped at 25-30% gross margins. It means conceding the podcast market to Apple, Amazon, and YouTube.\n\nDrastic cost-cutting signals to investors that you're in retreat, not in control. Netflix's cost-cutting worked because they simultaneously invested in ad-supported tiers and live sports. Pure austerity without reinvestment is managed decline.\n\nThe better model: Spotify reduced podcast spending from $1B+ to a more sustainable level—it didn't exit. It cut unprofitable exclusives while keeping Anchor (creator platform) and ad-supported podcasts. Selective pruning, not deforestation.\n\nStrategic cost-cutting strengthens focus. Panic-driven cost-cutting destroys optionality."
+                            },
+                            {
+                                text: "Double down on growth—expand into new markets, add more content types, and trust that scale will eventually produce profitability",
+                                points: 3,
+                                feedback: "This is the strategy that got Spotify into trouble in the first place. After 15 years and billions in losses, \"growth will eventually produce profit\" has lost credibility with investors and the board.\n\nThe market environment in 2023-2024 fundamentally changed. Rising interest rates made \"growth at any cost\" unacceptable. Investors demanded unit economics, not just user numbers. Spotify's stock had fallen 60% from its peak.\n\nMore critically, Spotify had already demonstrated that music streaming growth alone doesn't improve margins. Going from 100 million to 600 million users didn't change the 70% royalty cost. Scale in music streaming doesn't produce operating leverage when variable costs scale linearly with revenue.\n\nThe Blue Ocean Strategy lesson: you can't blue-ocean your way out of a margin structure problem. You need to fundamentally change the business model—which is what the price increase + podcast pivot + revenue diversification achieved."
+                            }
+                        ]
+                    },
+                    {
+                        id: 10,
+                        scenario: "**January 2025 – The AI Audio Platform**\n\n**The New Frontier:**\nSpotify is profitable for the first time. 600+ million MAU. 240+ million Premium subscribers. Daniel Ek declares 2025 the year of \"accelerated execution.\" AI is reshaping every product surface.\n\n**The AI Products Already Launched:**\nAI DJ (a personalized radio host that talks to you between songs), AI-generated playlists from natural language prompts, AI-powered ad creation tools for advertisers.\n\n**The Strategic Question:**\nShould Spotify become an AI-first platform? This means: using AI to replace human-curated editorial playlists, generating personalized podcast recommendations, creating AI-narrated audiobooks, and potentially even AI-generated music.\n\n**The Tension:**\nArtists are furious about AI-generated music potentially devaluing human creativity. Labels are threatening legal action against AI music on the platform. Apple is investing in human curation as a differentiator (\"Algorithms can't replace human taste\").\n\n**The Data:**\nAI DJ has 50+ million users and increases listening time by 25%. AI playlist features have 3X higher engagement than editorial playlists. But 40% of artists surveyed say they'd leave Spotify if AI music is allowed on the platform.",
+                        question: "How should Spotify navigate the AI transformation while managing artist and label relationships?",
+                        options: [
+                            {
+                                text: "Use AI to enhance human creativity—AI-powered discovery, personalization, and creator tools—but explicitly ban AI-generated music from the platform",
+                                points: 10,
+                                feedback: "This is the strategic sweet spot—and it's the direction Spotify is moving.\n\nThe framework: AI as amplifier, not replacement. Use AI to make human music more discoverable (better algorithms), make human podcasts easier to create (AI editing tools via Anchor), and make advertising more effective (AI ad creation). But draw a clear line: AI does not create the content itself.\n\nWhy this works strategically:\n\n1. Protects supplier relationships: Labels and artists are Spotify's supply chain. Alienating them by allowing AI music is like Amazon allowing counterfeit products—it destroys platform trust.\n\n2. Differentiates from competitors: Apple emphasizes human curation over algorithms. YouTube has a massive AI-generated content problem. By being \"the platform that protects human artists while using AI to serve them better,\" Spotify occupies a unique position.\n\n3. Avoids legal landmines: AI music copyright is unresolved. Major labels are actively suing AI music generators. Hosting AI music exposes Spotify to massive litigation risk.\n\n4. Aligns with Blue Ocean Strategy: the blue ocean isn't \"AI music\" (which is a liability-filled red ocean). It's \"AI-powered discovery of human music\"—which is already Spotify's biggest advantage.\n\nThe OKR: Objective: Become the world's best platform for human audio creators. KR1: AI-powered features increase artist streams by 20%. KR2: Zero AI-generated music disputes. KR3: Creator satisfaction above 80%."
+                            },
+                            {
+                                text: "Go all-in on AI across the entire platform—including AI-generated music—to lead the next era of audio content",
+                                points: 3,
+                                feedback: "You're making the same mistake that early social media platforms made with user-generated content: optimizing for volume at the expense of quality and trust.\n\nAllowing AI-generated music would trigger an immediate crisis:\n\n1. Label revolt: Universal, Sony, and Warner would threaten to pull their catalogs. They control 70% of the music Spotify's users actually listen to. One label withdrawal would devastate the platform.\n\n2. Artist exodus: If 40% of artists leave (as surveyed), Spotify's catalog advantage—its core value proposition—evaporates.\n\n3. Quality collapse: AI music would flood the platform with millions of low-quality tracks, drowning out human artists and degrading the recommendation engine.\n\n4. Legal risk: AI music copyright law is unsettled. Hosting AI music that may violate artists' rights exposes Spotify to class-action lawsuits.\n\nPorter's Five Forces: this strategy increases supplier power (labels threaten withdrawal), reduces buyer value (users get worse recommendations), and invites substitutes (human-only platforms).\n\nBeing first to a landmine isn't leadership—it's recklessness."
+                            },
+                            {
+                                text: "Take a cautious approach—maintain current AI features but don't expand until the regulatory and legal landscape is clearer",
+                                points: 5,
+                                feedback: "You're choosing safety in a moment that rewards leadership.\n\nAI DJ already has 50 million users and increases listening time by 25%. AI playlist features have 3X higher engagement. The data clearly shows users want AI-enhanced experiences. Pausing means giving competitors time to catch up.\n\nApple, Amazon, and YouTube are all investing in AI audio. If Spotify waits for perfect clarity, competitors will establish AI audio leadership. In fast-moving technology markets, first-mover advantage in user experience is often decisive.\n\nThe better approach: move fast on AI tools that enhance human creativity (discovery, personalization, creator tools) while drawing clear ethical lines (no AI-generated music, transparent labeling). You can be a leader without being reckless.\n\nThe mistake here is treating all AI features as equally risky. AI-powered recommendations are zero-risk. AI-generated music is high-risk. A nuanced strategy differentiates between the two."
+                            },
+                            {
+                                text: "Pivot strategy: use AI to build a two-sided marketplace connecting AI tool developers with music creators",
+                                points: 6,
+                                feedback: "You're thinking about platform strategy—which is smart. But you're adding complexity when Spotify's core business needs focus.\n\nA two-sided marketplace for AI tools would require: developer relations, API infrastructure, quality control, revenue sharing, and support—essentially building an App Store for music creation. That's a massive distraction when Spotify is just now achieving profitability.\n\nThe kernel of a good idea here is empowering creators with AI tools. But Spotify should build these tools directly (through Anchor/Spotify for Creators) rather than outsourcing to a marketplace.\n\nWhy direct is better: quality control (Spotify ensures tools meet its standards), data advantage (Spotify's listening data can power the tools), and integration (tools work seamlessly within Spotify's ecosystem).\n\nPlatform marketplace models work when there's genuine diversity of supplier types (like app stores). AI music tools are a narrow vertical where direct investment beats marketplace infrastructure."
+                            }
+                        ]
+                    }
+                ]
+            };
 
-  return h("div",{className:"min-h-screen flex items-center justify-center p-6"},
-    h("div",{className:"bg-white p-8 rounded-xl shadow max-w-xl"},
-      h("p",{className:"text-gray-600 mb-2"},q[0]),
-      h("h3",{className:"font-semibold mb-4"},q[1]),
-      q.slice(2).map((o,idx)=>
-        h("button",{key:idx,className:"block w-full border p-4 rounded mb-3 hover:bg-blue-50",
-          onClick:()=>setFeedback({text:o[0],points:o[1],explain:o[2]})},o[0])
-      )
-    )
-  );
-}
+            // Enhanced tracking with retry logic
+            const retryFailedEvents = async () => {
+                const failed = JSON.parse(localStorage.getItem('pmSimFailedEvents_w2') || '[]');
+                if (failed.length === 0) return;
+                const stillFailed = [];
+                for (const event of failed) {
+                    if (event.retryCount >= 3) continue;
+                    try {
+                        await fetch(GOOGLE_SCRIPT_URL, {
+                            method: 'POST',
+                            mode: 'no-cors',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(event)
+                        });
+                    } catch (error) {
+                        event.retryCount = (event.retryCount || 0) + 1;
+                        stillFailed.push(event);
+                    }
+                }
+                if (stillFailed.length > 0) {
+                    localStorage.setItem('pmSimFailedEvents_w2', JSON.stringify(stillFailed));
+                } else {
+                    localStorage.removeItem('pmSimFailedEvents_w2');
+                }
+            };
 
-/* ================= RENDER ================= */
-ReactDOM.createRoot(document.getElementById("root"))
-  .render(h(ErrorBoundary,null,h(App)));
-</script>
+            const sendToGoogleSheets = async (data) => {
+                try {
+                    await fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                    await retryFailedEvents();
+                } catch (error) {
+                    const failedEvents = JSON.parse(localStorage.getItem('pmSimFailedEvents_w2') || '[]');
+                    failedEvents.push({ ...data, failedAt: new Date().toISOString(), retryCount: (data.retryCount || 0) });
+                    localStorage.setItem('pmSimFailedEvents_w2', JSON.stringify(failedEvents));
+                }
+            };
+
+            const handleEmailSubmit = (e) => {
+                e.preventDefault();
+                if (email && email.includes('@')) {
+                    localStorage.setItem('pmSimEmail_w2', email);
+                    localStorage.setItem('pmSimStartTime_w2', new Date().toISOString());
+                    sendToGoogleSheets({ email, simulation: 'Week 2 - Strategic Product Thinking', status: 'started' });
+                    setHasStarted(true);
+                }
+            };
+
+            const handleAnswer = (optionIndex) => {
+                setSelectedAnswerIndex(optionIndex);
+            };
+
+            const clearStoredProgress = () => {
+                localStorage.removeItem('pmSimEmail_w2');
+                localStorage.removeItem('pmSimStartTime_w2');
+            };
+
+            const handleNextChallenge = () => {
+                if (selectedAnswerIndex === null) return;
+                
+                const currentQ = simulation.questions[currentQuestion];
+                const selectedOption = currentQ.options[selectedAnswerIndex];
+                
+                const newAnswers = [...answers, { question: currentQuestion, points: selectedOption.points, feedback: selectedOption.feedback }];
+                setAnswers(newAnswers);
+                setSelectedAnswerIndex(null);
+
+                if ((currentQuestion + 1) % 3 === 0 && currentQuestion < simulation.questions.length - 1) {
+                    sendToGoogleSheets({
+                        email,
+                        simulation: 'Week 2 - Strategic Product Thinking',
+                        status: 'progress',
+                        questionNumber: currentQuestion + 1,
+                        totalQuestions: simulation.questions.length
+                    });
+                }
+
+                if (currentQuestion < simulation.questions.length - 1) {
+                    setCurrentQuestion(currentQuestion + 1);
+                } else {
+                    const totalPoints = newAnswers.reduce((sum, answer) => sum + answer.points, 0);
+                    const maxPoints = simulation.questions.reduce((sum, q) => sum + Math.max(...q.options.map(o => o.points)), 0);
+                    const percentage = Math.round((totalPoints / maxPoints) * 100);
+                    
+                    let tier = '';
+                    if (percentage >= 90) tier = 'Strategic Mastery';
+                    else if (percentage >= 75) tier = 'Applied Proficiency';
+                    else if (percentage >= 60) tier = 'Core Competency';
+                    else tier = 'Foundational Understanding';
+                    
+                    sendToGoogleSheets({ 
+                        email, 
+                        simulation: 'Week 2 - Strategic Product Thinking',
+                        score: totalPoints,
+                        percentage,
+                        tier
+                    });
+                    
+                    setShowResults(true);
+                    localStorage.setItem('product_manager_simulation_week2_attempted', 'true');
+                    clearStoredProgress();
+                }
+            };
+
+            const calculateScore = () => {
+                const totalPoints = answers.reduce((sum, answer) => sum + answer.points, 0);
+                const maxPoints = simulation.questions.reduce((sum, q) => sum + Math.max(...q.options.map(o => o.points)), 0);
+                return { totalPoints, maxPoints, percentage: Math.round((totalPoints / maxPoints) * 100) };
+            };
+
+            const getNarrative = (percentage) => {
+                if (percentage >= 90) {
+                    return {
+                        title: "Strategic Mastery",
+                        text: "Exceptional! You demonstrated world-class strategic product thinking. Your decisions show deep understanding of competitive positioning, business model innovation, and strategic trade-offs. You think like a senior PM at a top-tier tech company—balancing Blue Ocean Strategy, Porter's Five Forces, and OKR-driven prioritization with practical market realities. You understand that great strategy isn't about choosing the obvious right answer—it's about seeing the asymmetric opportunity everyone else misses. This level of strategic intuition is rare and highly valued.",
+                        tier: "Strategic Mastery"
+                    };
+                } else if (percentage >= 75) {
+                    return {
+                        title: "Applied Proficiency",
+                        text: "Strong strategic thinking! You understand competitive dynamics, business model design, and market positioning. Most of your decisions reflect sound OKR reasoning and stakeholder awareness. A few choices leaned too heavily toward safe, conventional approaches when the situation called for bold strategic bets. The best strategists know when to accept short-term pain for long-term structural advantage. Study Blue Ocean Strategy and Porter's Five Forces more deeply—focus on identifying when to compete in existing markets versus creating new ones.",
+                        tier: "Applied Proficiency"
+                    };
+                } else if (percentage >= 60) {
+                    return {
+                        title: "Core Competency",
+                        text: "You're building solid strategic foundations. You understand basic competitive dynamics—that price wars are dangerous and differentiation matters. But several decisions missed the structural forces that drive long-term competitive advantage: supplier power (labels), switching costs (personalization), and business model innovation (freemium). Focus on frameworks: use Porter's Five Forces to analyze competitive positions, Business Model Canvas to design value propositions, and OKRs to align tactics with strategy. Study how Spotify, Netflix, and Amazon navigated the tension between growth and profitability.",
+                        tier: "Core Competency"
+                    };
+                } else {
+                    return {
+                        title: "Foundational Understanding",
+                        text: "You're at the beginning of your strategic thinking journey. Several decisions focused on tactical execution (cost-cutting, safe choices) when strategic innovation was needed. Strategic product thinking requires seeing beyond the immediate decision to its second and third-order effects. Start with fundamentals: read Blue Ocean Strategy by W. Chan Kim, study Porter's Five Forces, and practice applying OKRs to real company decisions. Analyze how companies like Spotify, Netflix, and Amazon made counter-intuitive bets that seemed risky but created massive competitive advantages. The goal is pattern recognition—learning to identify when boldness beats caution.",
+                        tier: "Foundational Understanding"
+                    };
+                }
+            };
+
+            // Helper function to format text with paragraphs
+            const formatText = (text) => {
+                if (!text) return '';
+                const paragraphs = text.split('\n\n').filter(p => p.trim());
+                return paragraphs.map((para, index) => {
+                    const trimmed = para.trim();
+                    
+                    const headerMatch = trimmed.match(/^\*\*(.+)\*\*$/);
+                    if (headerMatch) {
+                        return h('p', { 
+                            key: index,
+                            className: 'mb-2 mt-4 first:mt-0',
+                            style: { fontWeight: 700, color: '#1e40af', fontSize: '16px' }
+                        }, headerMatch[1]);
+                    }
+                    
+                    const emojiMatch = trimmed.match(/^([🎯🏠📊🔥⚡⚠️🎊💡🚀🎵]+)\s(.+)$/);
+                    if (emojiMatch) {
+                        return h('p', { 
+                            key: index,
+                            className: 'mb-3 flex items-start gap-2'
+                        },
+                            h('span', { className: 'emoji text-xl flex-shrink-0' }, emojiMatch[1]),
+                            h('span', { className: 'context-text flex-1' }, emojiMatch[2])
+                        );
+                    }
+                    
+                    const labelMatch = trimmed.match(/^\*\*(.+?)\*\*\n(.+)$/s);
+                    if (labelMatch) {
+                        return h('p', { 
+                            key: index,
+                            className: 'mb-3 last:mb-0'
+                        },
+                            h('strong', { style: { fontWeight: 600, color: '#1e40af', fontSize: '15px', display: 'block', marginBottom: '4px' } }, labelMatch[1] + ':'),
+                            h('span', { style: { color: '#4b5563' } }, labelMatch[2])
+                        );
+                    }
+                    
+                    const quoteMatch = trimmed.match(/^"(.+)"$/);
+                    if (quoteMatch) {
+                        return h('p', { 
+                            key: index,
+                            className: 'mb-3 italic pl-4 border-l-2 border-blue-300',
+                            style: { color: '#475569', fontStyle: 'italic', fontSize: '15px' }
+                        }, `"${quoteMatch[1]}"`);
+                    }
+                    
+                    return h('p', { 
+                        key: index,
+                        className: 'mb-3 last:mb-0',
+                        style: { lineHeight: '1.6' }
+                    }, trimmed);
+                });
+            };
+
+            const shareToLinkedIn = () => {
+                const score = calculateScore();
+                const narrative = getNarrative(score.percentage);
+                
+                sendToGoogleSheets({ 
+                    email, 
+                    simulation: 'Week 2 - Strategic Product Thinking',
+                    score: score.totalPoints,
+                    percentage: score.percentage,
+                    tier: narrative.tier,
+                    action: 'SHARED_ON_LINKEDIN'
+                });
+                
+                const simulationUrl = window.location.href.split('?')[0];
+                
+                const shareText = `I completed Product Manager Simulation 2/20 today.
+
+My assessment: ${score.percentage}% - ${narrative.tier}
+
+The scenario: "${simulation.title}"
+
+Key areas evaluated:
+• Business Model Canvas & Lean Canvas design
+• Porter's Five Forces competitive analysis
+• Blue Ocean Strategy application
+• OKR-driven strategic prioritization
+• Market positioning & competitive response
+
+Working through Spotify's strategic crossroads—from freemium vs. paid, to the Apple Music threat, to the $500M podcast bet—reminded me that great strategy is about seeing the asymmetric opportunity everyone else misses.
+
+Simulation link: ${simulationUrl}
+
+#ProductManagement #ProductManager #PMSkills #ProfessionalDevelopment #Leadership #ProductStrategy #ContinuousLearning
+
+Connect with Mohan Simham for the complete Product Manager simulation series: linkedin.com/in/mohansimham`;
+
+                const modal = document.createElement('div');
+                modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px;';
+                
+                const card = document.createElement('div');
+                card.style.cssText = 'background: white; border-radius: 16px; padding: 32px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto;';
+                
+                const previewText = shareText.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                
+                card.innerHTML = `
+                    <div style="text-align: center;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">🎉</div>
+                        <h2 style="font-size: 24px; font-weight: bold; margin-bottom: 16px; color: #1f2937;">Ready to Share Your Achievement!</h2>
+                        <p style="color: #6b7280; margin-bottom: 24px; line-height: 1.6;">Share your strategic assessment results on LinkedIn in 3 easy steps:</p>
+                        <ol style="text-align: left; color: #6b7280; margin-bottom: 24px; line-height: 1.8; padding-left: 24px;">
+                            <li><strong>Click</strong> the button below (copies text + opens LinkedIn)</li>
+                            <li><strong>Click "Start a post"</strong> on LinkedIn</li>
+                            <li><strong>Paste</strong> (Ctrl+V or Cmd+V) and click Post! 🚀</li>
+                        </ol>
+                        <div style="background: #f3f4f6; padding: 16px; border-radius: 8px; margin-bottom: 24px; text-align: left; max-height: 250px; overflow-y: auto; font-size: 13px; line-height: 1.6; white-space: pre-wrap; color: #374151; font-family: monospace;">${previewText}</div>
+                        <button id="copyShareBtn" style="width: 100%; background: #0A66C2; color: white; padding: 16px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-bottom: 12px; transition: all 0.3s;">
+                            📋 Copy & Open LinkedIn
+                        </button>
+                        <button id="cancelBtn" style="width: 100%; background: #e5e7eb; color: #374151; padding: 12px; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer;">
+                            Cancel
+                        </button>
+                    </div>
+                `;
+                
+                modal.appendChild(card);
+                document.body.appendChild(modal);
+                
+                document.getElementById('copyShareBtn').addEventListener('click', () => {
+                    navigator.clipboard.writeText(shareText).then(() => {
+                        window.open('https://www.linkedin.com/feed/', '_blank');
+                        document.getElementById('copyShareBtn').innerHTML = '✅ Copied! LinkedIn Opening...';
+                        document.getElementById('copyShareBtn').style.background = '#10b981';
+                        setTimeout(() => { if (modal.parentElement) document.body.removeChild(modal); }, 2000);
+                    }).catch(() => {
+                        alert('Please copy manually:\n\n' + shareText);
+                        window.open('https://www.linkedin.com/feed/', '_blank');
+                    });
+                });
+                
+                document.getElementById('cancelBtn').addEventListener('click', () => {
+                    if (modal.parentElement) document.body.removeChild(modal);
+                });
+                
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) document.body.removeChild(modal);
+                });
+            };
+
+            const downloadBadge = () => {
+                const score = calculateScore();
+                const narrative = getNarrative(score.percentage);
+                
+                sendToGoogleSheets({ 
+                    email, 
+                    simulation: 'Week 2 - Strategic Product Thinking',
+                    score: score.totalPoints,
+                    percentage: score.percentage,
+                    tier: narrative.tier,
+                    action: 'DOWNLOADED_BADGE'
+                });
+                
+                const canvas = document.createElement('canvas');
+                canvas.width = 1200;
+                canvas.height = 675;
+                const ctx = canvas.getContext('2d');
+                
+                // Background
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Left accent bar
+                const leftGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                leftGradient.addColorStop(0, '#1e40af');
+                leftGradient.addColorStop(1, '#3b82f6');
+                ctx.fillStyle = leftGradient;
+                ctx.fillRect(0, 0, 20, canvas.height);
+                
+                // Top header section
+                ctx.fillStyle = '#eff6ff';
+                ctx.fillRect(20, 0, canvas.width - 20, 120);
+                
+                ctx.fillStyle = '#1e40af';
+                ctx.font = 'bold 24px Arial, sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText('PRODUCT MANAGEMENT', 60, 50);
+                
+                ctx.fillStyle = '#6b7280';
+                ctx.font = '16px Arial, sans-serif';
+                ctx.fillText('SIMULATION SERIES', 60, 80);
+                
+                ctx.fillStyle = '#1e40af';
+                ctx.font = 'bold 18px Arial, sans-serif';
+                ctx.textAlign = 'right';
+                ctx.fillText('WEEK 2 OF 20', 1140, 50);
+                
+                ctx.fillStyle = '#6b7280';
+                ctx.font = '14px Arial, sans-serif';
+                ctx.fillText('Strategic Product Thinking', 1140, 75);
+                
+                // Main content
+                ctx.textAlign = 'left';
+                ctx.fillStyle = '#111827';
+                ctx.font = 'bold 36px Arial, sans-serif';
+                ctx.fillText("Spotify's Audio Empire", 60, 190);
+                
+                ctx.fillStyle = '#4b5563';
+                ctx.font = '20px Arial, sans-serif';
+                ctx.fillText('Strategic Product Thinking Assessment', 60, 225);
+                
+                // Score section
+                ctx.fillStyle = '#eff6ff';
+                ctx.beginPath();
+                ctx.roundRect(60, 260, 400, 160, 12);
+                ctx.fill();
+                
+                ctx.fillStyle = '#1e40af';
+                ctx.font = 'bold 72px Arial, sans-serif';
+                ctx.fillText(`${score.percentage}%`, 100, 350);
+                
+                ctx.fillStyle = '#1e40af';
+                ctx.font = 'bold 20px Arial, sans-serif';
+                ctx.fillText(narrative.tier, 100, 395);
+                
+                // Details
+                ctx.fillStyle = '#374151';
+                ctx.font = '16px Arial, sans-serif';
+                ctx.fillText(`Score: ${score.totalPoints}/${score.maxPoints} points`, 520, 300);
+                ctx.fillText('Frameworks Tested:', 520, 335);
+                
+                ctx.fillStyle = '#6b7280';
+                ctx.font = '14px Arial, sans-serif';
+                const frameworks = ['Business Model Canvas', "Porter's Five Forces", 'Blue Ocean Strategy', 'OKR Prioritization', 'Competitive Positioning'];
+                frameworks.forEach((fw, i) => {
+                    ctx.fillText(`• ${fw}`, 540, 365 + (i * 24));
+                });
+                
+                // Footer
+                ctx.fillStyle = '#f3f4f6';
+                ctx.fillRect(20, 560, canvas.width - 20, 115);
+                
+                ctx.fillStyle = '#6b7280';
+                ctx.font = '14px Arial, sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText('© 2025 Mohan Simham | Product Management Simulation Series', 60, 595);
+                ctx.fillText('linkedin.com/in/mohansimham', 60, 620);
+                
+                ctx.textAlign = 'right';
+                ctx.fillText(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }), 1140, 595);
+                ctx.fillText('Simulation 2 of 20', 1140, 620);
+                
+                // Download
+                const link = document.createElement('a');
+                link.download = `PM-Simulation-Week2-${narrative.tier.replace(/\s+/g, '-')}-${score.percentage}pct.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            };
+
+            // ============ RENDERING ============
+
+            // Already attempted screen
+            if (hasAttempted && !hasStarted) {
+                return h('div', { className: 'min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center p-6' },
+                    h('div', { className: 'bg-white rounded-2xl shadow-xl p-8 max-w-lg text-center' },
+                        h('div', { className: 'text-5xl mb-4' }, '🔒'),
+                        h('h2', { className: 'text-2xl font-bold text-gray-900 mb-3' }, 'Assessment Already Completed'),
+                        h('p', { className: 'text-gray-600 mb-6' }, 'You have already completed the Week 2 Strategic Product Thinking simulation. Each simulation can only be attempted once to maintain assessment integrity.'),
+                        h('p', { className: 'text-sm text-gray-500' }, 'Ready for Week 3? Continue the Product Manager challenge series!')
+                    )
+                );
+            }
+
+            // Start screen
+            if (!hasStarted) {
+                return h('div', { className: 'min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center p-6' },
+                    h('div', { className: 'max-w-xl w-full' },
+                        h('div', { className: 'bg-white rounded-2xl shadow-xl overflow-hidden' },
+                            h('div', { className: 'bg-gradient-to-r from-indigo-600 to-blue-600 p-8 text-white text-center' },
+                                h('div', { className: 'text-sm font-semibold tracking-wide uppercase opacity-80 mb-2' }, 'SIMULATION 2 OF 20'),
+                                h('h1', { className: 'text-3xl font-bold mb-2' }, simulation.week + ': Strategic Product Thinking'),
+                                h('p', { className: 'text-blue-100 text-lg' }, "Spotify's Audio Empire")
+                            ),
+                            h('div', { className: 'p-8' },
+                                h('p', { className: 'text-gray-600 mb-6 leading-relaxed' }, simulation.description),
+                                h('div', { className: 'grid grid-cols-2 gap-4 mb-6' },
+                                    h('div', { className: 'bg-blue-50 p-4 rounded-lg text-center' },
+                                        h('div', { className: 'text-2xl font-bold text-blue-600' }, '10'),
+                                        h('div', { className: 'text-xs text-gray-500 uppercase tracking-wide' }, 'Strategic Decisions')
+                                    ),
+                                    h('div', { className: 'bg-blue-50 p-4 rounded-lg text-center' },
+                                        h('div', { className: 'text-2xl font-bold text-blue-600' }, '100'),
+                                        h('div', { className: 'text-xs text-gray-500 uppercase tracking-wide' }, 'Points Available')
+                                    )
+                                ),
+                                h('div', { className: 'mb-6 p-4 bg-gray-50 rounded-lg' },
+                                    h('p', { className: 'text-sm font-semibold text-gray-700 mb-2' }, 'Frameworks Tested:'),
+                                    h('div', { className: 'flex flex-wrap gap-2' },
+                                        ['Business Model Canvas', "Porter's Five Forces", 'Blue Ocean Strategy', 'OKRs', 'Competitive Positioning'].map((fw, i) => 
+                                            h('span', { key: i, className: 'text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium' }, fw)
+                                        )
+                                    )
+                                ),
+                                h('form', { onSubmit: handleEmailSubmit },
+                                    h('input', {
+                                        type: 'email',
+                                        value: email,
+                                        onChange: (e) => setEmail(e.target.value),
+                                        placeholder: 'Enter your email to begin',
+                                        className: 'w-full p-3 border-2 border-gray-200 rounded-lg mb-4 focus:border-blue-500 focus:outline-none',
+                                        required: true
+                                    }),
+                                    h('button', {
+                                        type: 'submit',
+                                        className: 'w-full bg-blue-600 text-white py-4 rounded-lg font-bold text-lg hover:bg-blue-700 transition-colors'
+                                    }, 'Begin Strategic Assessment →')
+                                ),
+                                h('p', { className: 'text-xs text-gray-400 mt-4 text-center' }, 'One attempt only. Your email is used for assessment tracking.')
+                            )
+                        )
+                    )
+                );
+            }
+
+            // Results screen
+            if (showResults) {
+                const score = calculateScore();
+                const narrative = getNarrative(score.percentage);
+
+                return h('div', { className: 'min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-6' },
+                    h('div', { className: 'max-w-3xl mx-auto' },
+                        h('div', { className: 'bg-white rounded-2xl shadow-xl p-8 mb-6' },
+                            h('div', { className: 'text-center mb-8' },
+                                h('div', { className: 'inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-4' },
+                                    h(TrophyIcon),
+                                    h('span', { className: 'text-sm font-semibold text-blue-800' }, 'ASSESSMENT COMPLETE')
+                                ),
+                                h('h2', { className: 'text-3xl font-bold text-gray-900 mb-2' }, narrative.title),
+                                h('p', { className: 'text-5xl font-bold text-blue-600 mb-2' }, `${score.percentage}%`),
+                                h('p', { className: 'text-gray-500' }, `${score.totalPoints} of ${score.maxPoints} points`)
+                            ),
+                            h('div', { className: 'bg-blue-50 rounded-xl p-6 mb-8' },
+                                h('p', { className: 'text-gray-700 leading-relaxed' }, narrative.text)
+                            ),
+                            h('div', { className: 'flex gap-3 mb-8 flex-wrap' },
+                                h('button', {
+                                    onClick: shareToLinkedIn,
+                                    className: 'flex-1 min-w-[200px] flex items-center justify-center gap-2 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors'
+                                }, h(Share2Icon), 'Share on LinkedIn'),
+                                h('button', {
+                                    onClick: downloadBadge,
+                                    className: 'flex-1 min-w-[200px] flex items-center justify-center gap-2 bg-white border-2 border-blue-600 text-blue-600 py-3 px-6 rounded-lg font-semibold hover:bg-blue-50 transition-colors'
+                                }, h(TrendingUpIcon), 'Download Badge')
+                            )
+                        ),
+                        
+                        // Detailed Review
+                        h('div', { className: 'space-y-6 mb-8' },
+                            simulation.questions.map((q, idx) => {
+                                const userAnswer = answers[idx];
+                                if (!userAnswer) return null;
+                                
+                                const selectedOption = q.options.find(o => o.points === userAnswer.points) || q.options[0];
+                                const correctAnswer = q.options.reduce((a, b) => a.points > b.points ? a : b);
+                                const isCorrect = userAnswer.points === correctAnswer.points;
+                                
+                                return h('div', { key: idx, className: 'bg-white rounded-2xl shadow-xl p-6' },
+                                    h('div', { className: 'flex items-center gap-3 mb-4' },
+                                        h('div', { 
+                                            className: `w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${isCorrect ? 'bg-green-500' : 'bg-orange-500'}`
+                                        }, idx + 1),
+                                        h('div', null,
+                                            h('p', { className: 'text-sm font-semibold text-gray-900' }, q.question),
+                                            h('p', { className: 'text-xs text-gray-500' }, `${userAnswer.points}/${correctAnswer.points} points`)
+                                        )
+                                    ),
+                                    
+                                    // Scenario recap
+                                    h('div', { className: 'analysis-scenario mb-4' },
+                                        formatText(q.scenario)
+                                    ),
+                                    
+                                    // User's answer
+                                    h('div', { className: `p-4 rounded-lg mb-3 ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-orange-50 border border-orange-200'}` },
+                                        h('p', { className: 'text-xs font-bold uppercase tracking-wide mb-1 ' + (isCorrect ? 'text-green-700' : 'text-orange-700') }, 
+                                            isCorrect ? '✓ Your Answer (Optimal)' : '⚠ Your Answer'
+                                        ),
+                                        h('p', { className: 'text-sm text-gray-800 font-medium mb-1' }, selectedOption.text),
+                                        h('p', { className: 'text-xs ' + (isCorrect ? 'text-green-600' : 'text-orange-600') }, 
+                                            userAnswer.points + ' points'
+                                        )
+                                    ),
+                                    
+                                    // Show optimal if different
+                                    !isCorrect && h('div', { className: 'p-4 rounded-lg mb-3 bg-green-50 border border-green-200' },
+                                        h('p', { className: 'text-xs font-bold uppercase tracking-wide text-green-700 mb-1' }, 
+                                            'Optimal Answer'
+                                        ),
+                                        h('p', { className: 'text-sm text-gray-800 font-medium mb-2' }, correctAnswer.text),
+                                        h('p', { className: 'text-xs text-green-700 font-medium' }, 
+                                            correctAnswer.points + ' points (maximum)'
+                                        )
+                                    ),
+                                    
+                                    // Explanation
+                                    h('div', { className: 'bg-blue-50 border-l-4 border-blue-600 p-4 rounded-r' },
+                                        h('div', { className: 'text-xs font-bold text-blue-900 uppercase tracking-wide mb-2' }, 
+                                            '💬 Mohan Simham\'s Comments'
+                                        ),
+                                        h('div', { className: 'feedback-content' }, formatText(userAnswer.feedback)),
+                                        !isCorrect && h('div', { className: 'mt-3 pt-3 border-t border-blue-200' },
+                                            h('p', { className: 'text-xs font-semibold text-blue-800 mb-2' }, 'Why the optimal answer is better:'),
+                                            h('div', { className: 'feedback-content' }, formatText(correctAnswer.feedback))
+                                        )
+                                    )
+                                );
+                            })
+                        ),
+                        
+                        // Disclaimer section
+                        h('div', { className: 'bg-gray-50 rounded-2xl shadow-xl p-6 mb-6' },
+                            h('h3', { className: 'text-lg font-bold text-gray-900 mb-4' }, 'Disclaimer'),
+                            h('div', { className: 'text-sm text-gray-600 space-y-3' },
+                                h('p', null,
+                                    h('strong', null, 'Educational Use Only: '),
+                                    'This simulation is an independent educational resource created for Product Manager skill development. It is not affiliated with, endorsed by, or sponsored by Spotify Technology S.A.'
+                                ),
+                                h('p', null,
+                                    h('strong', null, 'Scenario Basis: '),
+                                    'The business scenarios presented are based on publicly available information about Spotify\'s growth journey, combined with hypothetical elements for educational purposes. Specific details, dialogue, and decision frameworks have been constructed for learning objectives and may not reflect actual internal processes or decisions made by Spotify.'
+                                ),
+                                h('p', null,
+                                    h('strong', null, 'No Official Representation: '),
+                                    'This content does not represent official Spotify policies, strategies, or viewpoints. Any resemblance to actual internal decisions or processes is coincidental and used purely for educational illustration.'
+                                ),
+                                h('p', null,
+                                    h('strong', null, 'Intellectual Property: '),
+                                    'Spotify and related trademarks are the property of Spotify Technology S.A. This educational simulation operates under fair use provisions for non-commercial educational purposes.'
+                                ),
+                                h('p', null,
+                                    h('strong', null, 'Independent Assessment: '),
+                                    'All analysis, commentary, and educational frameworks are the independent work of the creator and do not reflect any official Spotify training materials or assessments.'
+                                )
+                            )
+                        ),
+                        
+                        h('div', { className: 'text-center mt-8' },
+                            h('p', { className: 'text-gray-600 mb-2' }, 'Ready for Simulation 3/20? Continue the Product Manager challenge series to master product discovery & validation!'),
+                            h('p', { className: 'text-sm text-gray-500 mb-1' }, '© 2025 Mohan Simham. All Rights Reserved.'),
+                            h('p', { className: 'text-xs text-gray-400' }, 
+                                'Connect with the creator: ',
+                                h('a', { 
+                                    href: 'https://linkedin.com/in/mohansimham', 
+                                    target: '_blank',
+                                    className: 'text-blue-400 hover:text-blue-500 underline'
+                                }, 'LinkedIn: /mohansimham')
+                            )
+                        )
+                    )
+                );
+            }
+
+            const currentQ = simulation.questions[currentQuestion];
+
+            return h('div', { className: 'min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-6' },
+                h('div', { className: 'max-w-3xl mx-auto' },
+                    h('div', { className: 'mb-8' },
+                        h('div', { className: 'flex justify-between text-sm text-gray-600 mb-2' },
+                            h('span', null, `Question ${currentQuestion + 1} of ${simulation.questions.length}`),
+                            h('span', null, `${Math.round(((currentQuestion) / simulation.questions.length) * 100)}% Complete`)
+                        ),
+                        h('div', { className: 'w-full bg-gray-200 rounded-full h-2' },
+                            h('div', {
+                                className: 'bg-gradient-to-r from-indigo-600 to-blue-600 h-2 rounded-full transition-all duration-500',
+                                style: { width: `${((currentQuestion) / simulation.questions.length) * 100}%` }
+                            })
+                        )
+                    ),
+                    h('div', { className: 'bg-white rounded-2xl shadow-xl overflow-hidden' },
+                        h('div', { className: 'bg-gradient-to-r from-gray-50 to-gray-100 p-6 border-b border-gray-200' },
+                            h('div', { className: 'flex items-start gap-3' },
+                                h('div', { className: 'w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center flex-shrink-0' },
+                                    h('span', { className: 'text-white font-bold' }, currentQuestion + 1)
+                                ),
+                                h('div', null,
+                                    h('div', { className: 'section-label' }, 'SCENARIO'),
+                                    h('div', { className: 'scenario-content' }, formatText(currentQ.scenario))
+                                )
+                            )
+                        ),
+                        h('div', { className: 'p-6' },
+                            h('div', { className: 'question-text mb-6' }, currentQ.question),
+                            h('div', { className: 'space-y-3 mb-6' },
+                                currentQ.options.map((option, idx) => {
+                                    const isSelected = selectedAnswerIndex === idx;
+                                    const buttonClass = isSelected 
+                                        ? 'w-full text-left p-4 border-2 rounded-lg transition-all border-blue-600 bg-blue-50' 
+                                        : 'w-full text-left p-4 border-2 rounded-lg transition-all border-gray-200 hover:border-blue-500 hover:bg-blue-50';
+                                    
+                                    const radioClass = isSelected
+                                        ? 'w-6 h-6 border-2 rounded-full flex items-center justify-center flex-shrink-0 transition-all border-blue-600 bg-blue-600'
+                                        : 'w-6 h-6 border-2 rounded-full flex items-center justify-center flex-shrink-0 transition-all border-gray-400 bg-white';
+                                    
+                                    const textClass = isSelected 
+                                        ? 'option-text text-gray-900 font-medium' 
+                                        : 'option-text text-gray-700';
+                                    
+                                    return h('button', {
+                                        key: idx,
+                                        onClick: () => handleAnswer(idx),
+                                        className: buttonClass
+                                    },
+                                        h('div', { className: 'flex items-start gap-3' },
+                                            h('div', { className: radioClass },
+                                                isSelected ? h('div', { className: 'w-2.5 h-2.5 bg-white rounded-full' }) : null
+                                            ),
+                                            h('p', { className: textClass }, option.text)
+                                        )
+                                    );
+                                })
+                            ),
+                            h('button', {
+                                onClick: handleNextChallenge,
+                                disabled: selectedAnswerIndex === null,
+                                className: selectedAnswerIndex !== null
+                                    ? 'w-full py-4 px-6 rounded-lg font-bold text-lg transition-all bg-blue-600 text-white hover:bg-blue-700 shadow-lg hover:shadow-xl cursor-pointer'
+                                    : 'w-full py-4 px-6 rounded-lg font-bold text-lg transition-all bg-gray-200 text-gray-400 cursor-not-allowed'
+                            }, currentQuestion === simulation.questions.length - 1 ? 'Complete Assessment →' : 'Next Challenge →')
+                        )
+                    ),
+                    h('div', { className: 'text-center mt-6 text-sm text-gray-500' }, '💡 Choose carefully - you only get one attempt at this module')
+                )
+            );
+        }
+
+        // Render the app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(PMSimulation));
+
+        // Retry failed events on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const failed = JSON.parse(localStorage.getItem('pmSimFailedEvents_w2') || '[]');
+                if (failed.length > 0) {
+                    console.log('🔄 Found failed events, will retry...');
+                }
+            }, 2000);
+        });
+    </script>
 </body>
 </html>
