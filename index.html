@@ -1,57 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<title>Week 2 – Strategic Product Thinking | Spotify</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-
-<style>
-body { margin: 0; font-family: system-ui, sans-serif; }
-</style>
+  <meta charset="UTF-8">
+  <title>JS Test</title>
 </head>
+<body>
+  <h1 id="msg">Before JS</h1>
 
-<body class="bg-slate-50">
-<div id="root"></div>
-
-<script>
-const h = React.createElement;
-const { useState } = React;
-
-function App() {
-  const [started, setStarted] = useState(false);
-  const [email, setEmail] = useState("");
-
-  return !started
-    ? h("div", { className:"min-h-screen flex items-center justify-center p-6" },
-        h("div", { className:"bg-white p-8 rounded-xl shadow-xl max-w-lg w-full" },
-          h("h1", { className:"text-2xl font-bold mb-4" },
-            "Spotify – Strategic Product Thinking"
-          ),
-          h("input", {
-            type:"email",
-            placeholder:"your@email.com",
-            value:email,
-            onChange:e=>setEmail(e.target.value),
-            className:"border p-3 w-full rounded mb-4"
-          }),
-          h("button", {
-            className:"bg-blue-600 text-white px-6 py-3 rounded w-full",
-            onClick:()=> email && setStarted(true)
-          }, "Start Simulation")
-        )
-      )
-    : h("div", { className:"min-h-screen flex items-center justify-center p-6" },
-        h("h2", { className:"text-3xl font-bold" },
-          "Simulation Loaded ✅"
-        )
-      );
-}
-
-ReactDOM.createRoot(document.getElementById("root"))
-  .render(h(App));
-<
+  <script>
+    document.getElementById("msg").innerText = "JavaScript executed ✅";
+    alert("JS is running");
+  </script>
+</body>
+</html>
