@@ -1,237 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spotify – Strategic Product Thinking Simulation</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Week 2 – Strategic Product Thinking | Spotify</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 
 <style>
-body { margin:0; font-family: system-ui, -apple-system, BlinkMacSystemFont; }
+body { font-family: system-ui, -apple-system; background:#f8fafc; }
 </style>
 </head>
 
-<body class="bg-slate-50">
+<body>
 <div id="root"></div>
 
 <script>
 const h = React.createElement;
+const { useState } = React;
 
-/* ================= ERROR BOUNDARY ================= */
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError:false };
-  }
-  static getDerivedStateFromError() {
-    return { hasError:true };
-  }
-  render() {
-    if (this.state.hasError) {
-      return h("div",{className:"min-h-screen flex items-center justify-center p-6"},
-        h("div",{className:"bg-white p-8 rounded-xl shadow-xl max-w-md text-center"},
-          h("h2",{className:"text-2xl font-bold text-red-600 mb-3"},"Something went wrong"),
-          h("p",{className:"text-gray-600"},"Please refresh the page.")
-        )
-      );
-    }
-    return this.props.children;
-  }
+/* ================= CONFIG ================= */
+const GOOGLE_SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbyGQtLE7KUZZZQ7xV_hlQCWzYayRKx2JnbTwtsQPRdmEFPaisrfm6qq3djx7QCpYTzi/exec";
+
+/* ================= TRACKING ================= */
+function track(data){
+  try{
+    fetch(GOOGLE_SCRIPT_URL,{
+      method:"POST",
+      mode:"no-cors",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify(data)
+    });
+  }catch(e){}
 }
 
-/* ================= SIMULATION DATA ================= */
+/* ================= QUESTIONS ================= */
 const SIM = {
-  title: "Spotify – Strategic Product Thinking",
-  description:
-    "A real-world product strategy simulation based on Spotify’s journey from piracy to platform dominance.",
-  questions: [
-    {
-      s:"2006: Music piracy dominates the world.",
-      q:"How should Spotify position itself?",
-      o:[
-        ["Compete with iTunes",3],
-        ["Be better than piracy",10],
-        ["Netflix for music",6],
-        ["Modern radio",4]
-      ]
-    },
-    {
-      s:"2008: Free users cost more than ads generate.",
-      q:"What should Spotify do?",
-      o:[
-        ["Remove free tier",2],
-        ["Double down on freemium",10],
-        ["Limit free usage",5],
-        ["Lower premium price",4]
-      ]
-    },
-    {
-      s:"2011: Spotify enters the US.",
-      q:"What is the biggest risk?",
-      o:[
-        ["Technology scalability",4],
-        ["Label negotiations",10],
-        ["User interface",3],
-        ["Marketing spend",5]
-      ]
-    },
-    {
-      s:"2015: Apple launches Apple Music.",
-      q:"What should Spotify compete on?",
-      o:[
-        ["Price",3],
-        ["Personalization & data",10],
-        ["Feature parity",6],
-        ["Exclusives only",5]
-      ]
-    },
-    {
-      s:"2017: Spotify Wrapped is proposed.",
-      q:"Should Spotify invest?",
-      o:[
-        ["No – gimmick",2],
-        ["Yes – brand moment",10],
-        ["Small experiment",5],
-        ["Quarterly Wrapped",3]
-      ]
-    },
-    {
-      s:"2019: Podcasts emerge as opportunity.",
-      q:"What is the strategic value?",
-      o:[
-        ["Diversification & margins",10],
-        ["Trend following",4],
-        ["Replace music",2],
-        ["Marketing play",5]
-      ]
-    },
-    {
-      s:"2020: Artists complain about payouts.",
-      q:"What should Spotify focus on?",
-      o:[
-        ["Higher per-stream payout",2],
-        ["Discovery & tools",10],
-        ["Ignore criticism",1],
-        ["Charge artists",3]
-      ]
-    },
-    {
-      s:"2023: Generative AI emerges.",
-      q:"Best AI investment?",
-      o:[
-        ["AI-generated music",3],
-        ["AI DJ & discovery",10],
-        ["Voice cloning",6],
-        ["Replace artists",1]
-      ]
-    },
-    {
-      s:"2024: Margins remain low.",
-      q:"What is Spotify’s best lever?",
-      o:[
-        ["Raise prices",4],
-        ["Podcasts & audiobooks",10],
-        ["Cut marketing",3],
-        ["Fire staff",1]
-      ]
-    },
-    {
-      s:"2025: Growth slows.",
-      q:"What should Spotify become?",
-      o:[
-        ["Music-only app",2],
-        ["Everything-audio platform",10],
-        ["Social network",5],
-        ["Live events company",6]
-      ]
-    }
-  ]
-};
+title:"Spotify’s Strategic Journey",
+questions:[
+{ s:"2006 – Piracy dominates music consumption.",
+  q:"How should Spotify position itself?",
+  o:[
+    ["Compete with iTunes",3,"Positions Spotify against labels"],
+    ["Be better than piracy",10,"Aligns users and labels"],
+    ["Netflix for music",6,"Helpful but incomplete"],
+    ["Digital radio",4,"Downplays disruption"]
+  ]},
+{ s:"2008 – Free users are unprofitable.",
+  q:"What should Spotify do?",
+  o:[
+    ["Remove free tier",2,"Kills growth engine"],
+    ["Double down on freemium",10,"Builds habit and data"],
+    ["Limit usage",5,"Creates resentment"],
+    ["Lower price",4,"Damages value perception"]
+  ]},
+{ s:"2011 – US market entry.",
+  q:"Biggest strategic risk?",
+  o:[
+    ["Technology scale",4,"Solvable problem"],
+    ["Label negotiations",10,"Existential dependency"],
+    ["UX design",3,"Not decisive"],
+    ["Marketing spend",5,"Manageable"]
+  ]},
+{ s:"2015 – Apple Music launches.",
+  q:"Where should Spotify compete?",
+  o:[
+    ["Price",3,"Apple can subsidize"],
+    ["Personalization & data",10,"Compounding moat"],
+    ["Feature parity",6,"Easily copied"],
+    ["Exclusives",5,"Helpful but limited"]
+  ]},
+{ s:"2017 – Spotify Wrapped proposed.",
+  q:"Should Spotify invest?",
+  o:[
+    ["No – gimmick",2,"Misses brand power"],
+    ["Yes – signature moment",10,"Earned media engine"],
+    ["Small experiment",6,"Under-invests"],
+    ["Quarterly Wrapped",4,"Kills anticipation"]
+  ]},
+{ s:"2019 – Podcast opportunity.",
+  q:"Why invest heavily?",
+  o:[
+    ["Trend following",3,"Weak logic"],
+    ["Margin expansion & ownership",10,"Fixes economics"],
+    ["Replace music",2,"Impossible"],
+    ["Marketing play",5,"Secondary benefit"]
+  ]},
+{ s:"2020 – Artist backlash.",
+  q:"Best response?",
+  o:[
+    ["Raise payouts",2,"Unsustainable"],
+    ["Focus on discovery tools",10,"Career value"],
+    ["Ignore criticism",1,"Reputation risk"],
+    ["Charge artists",3,"Bad optics"]
+  ]},
+{ s:"2023 – Generative AI emerges.",
+  q:"Best AI bet?",
+  o:[
+    ["AI music creation",3,"Threatens labels"],
+    ["AI DJ & discovery",10,"Enhances core moat"],
+    ["Voice cloning",6,"Narrow use"],
+    ["Replace artists",1,"Strategic suicide"]
+  ]},
+{ s:"2024 – Margin pressure.",
+  q:"Best lever?",
+  o:[
+    ["Raise prices",4,"Short-term"],
+    ["Shift mix to podcasts/audiobooks",10,"Structural fix"],
+    ["Cut R&D",3,"Harms moat"],
+    ["Reduce marketing",2,"Slows growth"]
+  ]},
+{ s:"2025 – Growth plateaus.",
+  q:"Next strategic direction?",
+  o:[
+    ["Music-only app",2,"Caps upside"],
+    ["Everything-audio platform",10,"Expands value"],
+    ["Social network",5,"Crowded"],
+    ["Live events",6,"Operational risk"]
+  ]}
+]};
 
 /* ================= APP ================= */
-function App() {
-  const { useState } = React;
+function App(){
+const [i,setI]=useState(0);
+const [answers,setAnswers]=useState([]);
+const [selected,setSelected]=useState(null);
+const [showFeedback,setShowFeedback]=useState(false);
 
-  const attempted = localStorage.getItem("spotify_attempted");
-  const [started,setStarted] = useState(false);
-  const [email,setEmail] = useState("");
-  const [i,setI] = useState(0);
-  const [score,setScore] = useState(0);
+const q=SIM.questions[i];
 
-  if (attempted && !started) {
-    return h("div",{className:"min-h-screen flex items-center justify-center p-6"},
-      h("div",{className:"bg-white p-8 rounded-xl shadow-xl max-w-md text-center"},
-        h("h2",{className:"text-2xl font-bold mb-3"},"Already Completed"),
-        h("p",{className:"text-gray-600"},"This simulation allows one attempt per user.")
-      )
-    );
-  }
+if(!q){
+const total=answers.reduce((s,a)=>s+a.points,0);
+const pct=Math.round((total/100)*100);
+const tier=pct>=90?"Strategic Mastery":pct>=75?"Applied Proficiency":pct>=60?"Core Competency":"Foundational";
 
-  if (!started) {
-    return h("div",{className:"min-h-screen flex items-center justify-center p-6"},
-      h("div",{className:"bg-white p-8 rounded-xl shadow-xl max-w-lg w-full"},
-        h("h1",{className:"text-2xl font-bold mb-4"},SIM.title),
-        h("p",{className:"text-gray-600 mb-6"},SIM.description),
-        h("input",{
-          className:"border p-3 w-full rounded mb-4",
-          placeholder:"Your email",
-          value:email,
-          onChange:e=>setEmail(e.target.value)
-        }),
-        h("button",{
-          className:"w-full bg-blue-600 text-white py-3 rounded-lg font-semibold",
-          onClick:()=>email && setStarted(true)
-        },"Start Simulation")
-      )
-    );
-  }
+track({status:"completed",score:pct,tier});
 
-  const q = SIM.questions[i];
-  if (!q) {
-    localStorage.setItem("spotify_attempted","yes");
-    const pct = Math.round((score/100)*100);
-    const tier =
-      pct>=90?"Strategic Mastery":
-      pct>=75?"Applied Proficiency":
-      pct>=60?"Core Competency":
-      "Foundational Understanding";
-
-    return h("div",{className:"min-h-screen flex items-center justify-center p-6"},
-      h("div",{className:"bg-white p-8 rounded-xl shadow-xl max-w-lg w-full text-center"},
-        h("h2",{className:"text-3xl font-bold mb-3"},tier),
-        h("p",{className:"text-xl font-semibold mb-2"},`Score: ${score} / 100`),
-        h("p",{className:"text-gray-600"},"Thank you for completing the simulation.")
-      )
-    );
-  }
-
-  return h("div",{className:"min-h-screen p-6 flex justify-center"},
-    h("div",{className:"bg-white rounded-xl shadow-xl max-w-3xl w-full p-6"},
-      h("div",{className:"text-sm text-gray-500 mb-2"},
-        `Question ${i+1} of ${SIM.questions.length}`
-      ),
-      h("p",{className:"mb-4 text-gray-700"},q.s),
-      h("h3",{className:"text-lg font-semibold mb-4"},q.q),
-      q.o.map((opt,idx)=>
-        h("button",{
-          key:idx,
-          className:"block w-full text-left border p-4 rounded mb-3 hover:bg-blue-50",
-          onClick:()=>{
-            setScore(score+opt[1]);
-            setI(i+1);
-          }
-        },opt[0])
-      )
-    )
-  );
+return h("div",{className:"min-h-screen p-6 max-w-4xl mx-auto"},
+h("h1",{className:"text-3xl font-bold mb-4"},tier+" ("+pct+"%)"),
+h("table",{className:"w-full bg-white shadow rounded"},
+h("thead",null,
+h("tr",{className:"bg-gray-100"},
+["Q","Your Choice","Points"].map(t=>h("th",{className:"p-3 text-left"},t))
+)),
+h("tbody",null,
+answers.map((a,idx)=>
+h("tr",{key:idx,className:"border-t"},
+h("td",{className:"p-3"},idx+1),
+h("td",{className:"p-3"},a.text),
+h("td",{className:"p-3"},a.points+" / 10")
+)
+)
+)
+);
 }
 
-/* ================= RENDER ================= */
-ReactDOM.createRoot(document.getElementById("root"))
-  .render(h(ErrorBoundary,null,h(App)));
+if(showFeedback){
+const opt=q.o[selected];
+return h("div",{className:"min-h-screen flex items-center justify-center"},
+h("div",{className:"bg-white p-8 rounded shadow max-w-lg"},
+h("h3",{className:"font-bold mb-2"},"Feedback"),
+h("p",{className:"mb-4"},opt[2]),
+h("button",{className:"bg-blue-600 text-white px-6 py-3 rounded",
+onClick:()=>{
+setAnswers([...answers,{text:opt[0],points:opt[1]}]);
+setSelected(null);
+setShowFeedback(false);
+setI(i+1);
+track({status:"progress",question:i+1});
+}},"Continue")
+)
+);
+}
+
+return h("div",{className:"min-h-screen flex items-center justify-center"},
+h("div",{className:"bg-white p-8 rounded shadow max-w-xl"},
+h("p",{className:"text-gray-600 mb-2"},q.s),
+h("h3",{className:"font-semibold mb-4"},q.q),
+q.o.map((o,idx)=>
+h("button",{key:idx,className:"block w-full border p-4 rounded mb-3 hover:bg-blue-50",
+onClick:()=>{setSelected(idx);setShowFeedback(true);}},o[0])
+)
+)
+);
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(h(App));
 </script>
 </body>
 </html>
