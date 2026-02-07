@@ -516,11 +516,12 @@
                 for (const event of failed) {
                     if (event.retryCount >= 3) continue;
                     try {
+                        const retryForm = new URLSearchParams();
+                        retryForm.append('data', JSON.stringify(event));
                         await fetch(GOOGLE_SCRIPT_URL, {
                             method: 'POST',
                             mode: 'no-cors',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(event)
+                            body: retryForm
                         });
                     } catch (error) {
                         event.retryCount = (event.retryCount || 0) + 1;
@@ -536,11 +537,12 @@
 
             const sendToGoogleSheets = async (data) => {
                 try {
+                    const formData = new URLSearchParams();
+                    formData.append('data', JSON.stringify(data));
                     await fetch(GOOGLE_SCRIPT_URL, {
                         method: 'POST',
                         mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(data)
+                        body: formData
                     });
                     await retryFailedEvents();
                 } catch (error) {
